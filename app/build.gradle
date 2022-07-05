@@ -13,19 +13,27 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
+        buildConfigField("String", "NAVER_API_ID", MY_NAVER_ID)
+        buildConfigField("String", "NAVER_API_URL", MY_KAKAO_URL)
+        buildConfigField("String", "NAVER_API_KEY", MY_KAKAO_KEY)
+        buildConfigField("String", "KAKAO_API_KEY", MY_KAKAO_KEY)
+        buildConfigField("String", "NAVER_API_URL", MY_KAKAO_URL)
+        buildConfigField("String", "OPEN_API_KEY", MY_OPENAPI_KEY)
+        buildConfigField("String", "OPEN_API_URL", MY_OPENAPI_URL)
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField ("String", "NAVER_API_ID", MY_NAVER_ID)
-        buildConfigField ("String", "NAVER_API_KEY", MY_NAVER_KEY)
-        buildConfigField ("String", "KAKAO_API_KEY", MY_KAKAO_KEY)
-        buildConfigField ("String", "NAVER_API_URL", MY_KAKAO_URL)
-        buildConfigField ("String", "OPEN_API_KEY", MY_OPENAPI_KEY)
     }
 
     buildTypes {
+        debug {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+        }
         release {
-            minifyEnabled false
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
