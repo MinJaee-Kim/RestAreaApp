@@ -4,11 +4,13 @@ import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
 
 class SearchCacheDataSourceImpl : SearchCacheDataSource {
+    private var searchList = ArrayList<Document>()
     override suspend fun getSearchFromCache(): List<Document> {
-        TODO("Not yet implemented")
+        return searchList
     }
 
     override suspend fun saveSearchFromCache(searchLog: List<Document>) {
-        TODO("Not yet implemented")
+        searchList.clear()
+        searchList = ArrayList(searchLog)
     }
 }

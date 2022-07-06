@@ -4,5 +4,5 @@ import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import retrofit2.Response
 
 interface SearchRemoteDataSource {
-    suspend fun getSearch(): Response<Document>
+    suspend fun getSearch(y : Double, x : Double, radius : Int, query: String): Response<Document>
 }

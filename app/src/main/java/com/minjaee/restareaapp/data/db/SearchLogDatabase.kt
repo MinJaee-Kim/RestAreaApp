@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.minjaee.restareaapp.data.model.keywordsearch.Document
 
-@Database(entities = [SearchLog::class], version = 1)
+@Database(entities = [Document::class], version = 1)
 abstract class SearchLogDatabase : RoomDatabase() {
     abstract val searchLogDAO : SearchLogDAO
 
@@ -19,7 +20,7 @@ abstract class SearchLogDatabase : RoomDatabase() {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         SearchLogDatabase::class.java,
-                        "search_log_data_database"
+                        "search_log_data_table"
                     ).build()
                 }
                 return instance

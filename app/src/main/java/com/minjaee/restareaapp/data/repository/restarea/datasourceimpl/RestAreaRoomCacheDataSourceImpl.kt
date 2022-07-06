@@ -4,11 +4,13 @@ import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomCacheDataSource
 
 class RestAreaRoomCacheDataSourceImpl : RestAreaRoomCacheDataSource {
+    private var restAreaRoomList = ArrayList<RestAreaRoom>()
     override suspend fun getRestAreaRoomFromCache(): List<RestAreaRoom> {
-        TODO("Not yet implemented")
+        return restAreaRoomList
     }
 
     override suspend fun saveRestAreaRoomFromCache(restAreaRoom: List<RestAreaRoom>) {
-        TODO("Not yet implemented")
+        restAreaRoomList.clear()
+        restAreaRoomList = ArrayList(restAreaRoom)
     }
 }

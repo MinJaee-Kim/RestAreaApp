@@ -4,11 +4,13 @@ import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionCacheDataSource
 
 class DirectionCacheDataSourceImpl : DirectionCacheDataSource {
+    private var directionList = ArrayList<GetDirections>()
     override suspend fun getDirectionFromCache(): List<GetDirections> {
-        TODO("Not yet implemented")
+        return directionList
     }
 
     override suspend fun saveDirectionFromCache(direction: List<GetDirections>) {
-        TODO("Not yet implemented")
+        directionList.clear()
+        directionList = ArrayList(direction)
     }
 }

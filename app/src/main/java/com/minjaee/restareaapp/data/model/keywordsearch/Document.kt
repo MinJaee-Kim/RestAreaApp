@@ -1,9 +1,16 @@
 package com.minjaee.restareaapp.data.model.keywordsearch
 
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "search_log_data_table")
 data class Document(
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "search_log_index")
+    val index : Int,
     @SerializedName("address_name")
     val addressName: String,
     @SerializedName("category_group_code")

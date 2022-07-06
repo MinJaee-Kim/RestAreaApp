@@ -4,6 +4,6 @@ import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
 import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 
 interface RestAreaRepository {
-    suspend fun getRestAreaRoom():List<RestAreaRoom>?
-    suspend fun getRestAreaFood():List<RestAreaFood>?
+    suspend fun getRestAreaRoom(serviceAreaName: String):List<RestAreaRoom>
+    suspend fun getRestAreaFood(stdRestNm: String):List<RestAreaFood>
 }

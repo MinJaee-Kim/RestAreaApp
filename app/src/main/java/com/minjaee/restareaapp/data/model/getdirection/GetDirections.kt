@@ -1,13 +1,9 @@
 package com.minjaee.restareaapp.data.model.getdirection
 
 
-import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(
-    tableName = "getdirections"
-)
 data class GetDirections(
     @SerializedName("code")
     val code: Int,
