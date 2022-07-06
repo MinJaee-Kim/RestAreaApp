@@ -8,9 +8,9 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "search_log_data_table")
 data class Document(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "search_log_index")
-    val index : Int,
+//    @PrimaryKey(autoGenerate = true)
+//    @ColumnInfo(name = "search_log_index")
+//    val index : Int,
     @SerializedName("address_name")
     val addressName: String,
     @SerializedName("category_group_code")
@@ -21,6 +21,7 @@ data class Document(
     val categoryName: String,
     @SerializedName("distance")
     val distance: String,
+    @PrimaryKey
     @SerializedName("id")
     val id: String,
     @SerializedName("phone")

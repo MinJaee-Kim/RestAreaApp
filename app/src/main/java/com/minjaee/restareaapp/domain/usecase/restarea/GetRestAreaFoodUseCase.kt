@@ -5,7 +5,7 @@ import com.minjaee.restareaapp.domain.repository.RestAreaRepository
 import retrofit2.Response
 
 class GetRestAreaFoodUseCase(private val restAreaRepository: RestAreaRepository) {
-    suspend fun execute(): List<RestAreaFood>? {
-        return restAreaRepository.getRestAreaFood()
+    suspend fun execute(stdRestNm: String): List<RestAreaFood>? {
+        return restAreaRepository.getRestAreaFood(stdRestNm)
     }
 }

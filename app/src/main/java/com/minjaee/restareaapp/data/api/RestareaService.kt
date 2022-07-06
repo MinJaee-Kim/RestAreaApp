@@ -11,7 +11,7 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface RestareaService {
-    @GET("/v2/local/search/keyword.json")
+    @GET("v2/local/search/keyword.json")
     suspend fun getKeyWordSearch(
         @Query("y") y: Double,
         @Query("x") x:Double,

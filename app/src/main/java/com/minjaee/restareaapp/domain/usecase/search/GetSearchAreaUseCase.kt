@@ -5,5 +5,6 @@ import com.minjaee.restareaapp.domain.repository.SearchRepository
 import retrofit2.Response
 
 class GetSearchAreaUseCase(private val searchRepository: SearchRepository) {
-    suspend fun execute(): Response<Document>? = searchRepository.getSearchArea()
+    suspend fun execute(y: Double, x: Double, radius: Int, query: String): List<Document>?
+    = searchRepository.getSearchArea(y, x, radius, query)
 }
