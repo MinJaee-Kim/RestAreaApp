@@ -5,5 +5,5 @@ import com.minjaee.restareaapp.data.model.getdirection.Goal
 import retrofit2.Response
 
 interface DirectionRepository {
-    suspend fun getDirection(start:String, goal:String): List<GetDirections>
+    suspend fun getDirection(start:String, goal:String): Response<GetDirections>
 }

@@ -13,5 +13,5 @@ data class GetDirections(
     @SerializedName("message")
     val message: String,
     @SerializedName("route")
-    val route: Route?
+    val route: Route
 )

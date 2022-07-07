@@ -1,6 +1,5 @@
 package com.minjaee.restareaapp.data.api
 
-import android.util.Log
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.MockResponse
@@ -14,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class RestAreaSerivceTest {
-    private lateinit var restAreaService:RestareaService
+    private lateinit var restAreaService:RestAreaService
     private lateinit var server: MockWebServer
 
     @Before
@@ -24,7 +23,7 @@ class RestAreaSerivceTest {
             .baseUrl(server.url(""))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(RestareaService::class.java)
+            .create(RestAreaService::class.java)
     }
 
     private fun enqueueMockResponse(

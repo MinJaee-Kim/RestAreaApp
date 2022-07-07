@@ -5,6 +5,7 @@ import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionCacheDataSource
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionRemoteDataSource
 import com.minjaee.restareaapp.domain.repository.DirectionRepository
+import retrofit2.Response
 import java.lang.Exception
 
 class DirectionRepositoryImpl(
@@ -15,48 +16,48 @@ class DirectionRepositoryImpl(
     override suspend fun getDirection(
         start: String,
         goal: String
-    ): List<GetDirections> {
+    ): Response<GetDirections> {
         return getDirectionFromCache(start, goal)
     }
 
     suspend fun getDirectionFromCache(
         start: String,
         goal: String
-    ) : List<GetDirections> {
-        lateinit var directionList: List<GetDirections>
+    ) : Response<GetDirections> {
+        lateinit var direction: Response<GetDirections>
         try {
-            directionList = directionCacheDataSource.getDirectionFromCache()
+            direction = directionCacheDataSource.getDirectionFromCache()
         } catch (exception: Exception) {
             Log.i("TAG", exception.message.toString())
         }
 
-        if (directionList.size>0){
-            return directionList
+        if (direction.isSuccessful){
+            return direction
         } else {
-            directionList = getDirectionFromAPI(start, goal)
-            directionCacheDataSource.saveDirectionFromCache(directionList)
+            direction = getDirectionFromAPI(start, goal)
+            directionCacheDataSource.saveDirectionFromCache(direction)
         }
 
-        return directionList
+        return direction
     }
 
     suspend fun getDirectionFromAPI(
         start: String,
         goal: String
-    ) : List<GetDirections> {
-        lateinit var directionList: List<GetDirections>
+    ) : Response<GetDirections> {
+        lateinit var direction: Response<GetDirections>
 
         try {
             val response = directionRemoteDataSource.getDirection(start, goal)
-            val body = response.body()
+//            val body = response.body()
 
-            if (body!=null) {
-                directionList = listOf(body)
+            if (direction.isSuccessful) {
+                direction = response
             }
         } catch (exception: Exception) {
             Log.i("TAG", exception.message.toString())
         }
 
-        return directionList
+        return direction
     }
 }
