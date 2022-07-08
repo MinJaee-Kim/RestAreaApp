@@ -5,12 +5,12 @@ import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionCac
 import retrofit2.Response
 
 class DirectionCacheDataSourceImpl : DirectionCacheDataSource {
-    private lateinit var direction:Response<GetDirections>
-    override suspend fun getDirectionFromCache(): Response<GetDirections> {
+    private lateinit var direction:GetDirections
+    override suspend fun getDirectionFromCache(): GetDirections {
         return direction
     }
 
-    override suspend fun saveDirectionFromCache(direction: Response<GetDirections>) {
+    override suspend fun saveDirectionFromCache(direction: GetDirections) {
         this.direction = direction
     }
 }

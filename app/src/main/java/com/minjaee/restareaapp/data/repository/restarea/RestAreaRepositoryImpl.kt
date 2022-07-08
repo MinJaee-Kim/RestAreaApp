@@ -7,7 +7,10 @@ import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodC
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodRemoteDataSource
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomCacheDataSource
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomRemoteDataSource
+import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.repository.RestAreaRepository
+import kotlinx.coroutines.delay
+import retrofit2.Response
 import java.lang.Exception
 
 class RestAreaRepositoryImpl(
@@ -16,23 +19,42 @@ class RestAreaRepositoryImpl(
     private val restAreaRoomCacheDataSource: RestAreaRoomCacheDataSource,
     private val restAreaRoomRemoteDataSource: RestAreaRoomRemoteDataSource
 ) : RestAreaRepository {
-    override suspend fun getRestAreaRoom(serviceAreaName: String): List<RestAreaRoom> {
+    lateinit var restAreaFoodList: Resource<RestAreaFood>
+    lateinit var restAreaRoomList: Resource<RestAreaRoom>
+    override suspend fun getRestAreaRoom(serviceAreaName: String): Resource<RestAreaRoom> {
         return getRestAreaRoomFromCache(serviceAreaName)
     }
 
-    override suspend fun getRestAreaFood(stdRestNm: String): List<RestAreaFood> {
+    override suspend fun getRestAreaFood(stdRestNm: String): Resource<RestAreaFood> {
         return getRestAreaFoodFormCache(stdRestNm)
     }
 
-    suspend fun getRestAreaRoomFromCache(serviceAreaName: String) : List<RestAreaRoom> {
-        lateinit var restAreaRoomList: List<RestAreaRoom>
+    private fun responseToRoomResource(response: Response<RestAreaRoom>): Resource<RestAreaRoom> {
+        if (response.isSuccessful){
+            response.body()?.let { result ->
+                return Resource.Success(result)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    private fun responseToFoodResource(response: Response<RestAreaFood>): Resource<RestAreaFood> {
+        if (response.isSuccessful){
+            response.body()?.let { result ->
+                return Resource.Success(result)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
+    suspend fun getRestAreaRoomFromCache(serviceAreaName: String) : Resource<RestAreaRoom> {
         try {
             restAreaRoomList = restAreaRoomCacheDataSource.getRestAreaRoomFromCache()
         } catch (exception: Exception){
             Log.i("TAG", exception.message.toString())
         }
 
-        if (restAreaRoomList.size>0){
+        if (::restAreaRoomList.isInitialized){
             return restAreaRoomList
         } else {
             restAreaRoomList = getRestAreaRoomFromAPI(serviceAreaName)
@@ -42,31 +64,20 @@ class RestAreaRepositoryImpl(
         return restAreaRoomList
     }
 
-    suspend fun getRestAreaRoomFromAPI(serviceAreaName: String) : List<RestAreaRoom> {
-        lateinit var restAreaRoomList: List<RestAreaRoom>
-        try {
-            val response = restAreaRoomRemoteDataSource.getRestAreaRoom(serviceAreaName)
-            val body = response.body()
-
-            if (body!=null){
-                restAreaRoomList = listOf(body)
-            }
-
-        } catch (exception: Exception) {
-            Log.i("TAG", exception.message.toString())
-        }
-        return restAreaRoomList
+    suspend fun getRestAreaRoomFromAPI(serviceAreaName: String) : Resource<RestAreaRoom> {
+        return responseToRoomResource(
+            restAreaRoomRemoteDataSource.getRestAreaRoom(serviceAreaName)
+        )
     }
 
-    suspend fun getRestAreaFoodFormCache(stdRestNm: String) : List<RestAreaFood> {
-        lateinit var restAreaFoodList: List<RestAreaFood>
+    suspend fun getRestAreaFoodFormCache(stdRestNm: String) : Resource<RestAreaFood> {
         try {
             restAreaFoodList = restAreaFoodCacheDataSource.getRestAreaFoodFromCache()
         } catch (exception: Exception){
             Log.i("TAG", exception.message.toString())
         }
 
-        if (restAreaFoodList.size>0){
+        if (::restAreaFoodList.isInitialized){
             return restAreaFoodList
         } else {
             restAreaFoodList = getRestAreaFoodFromAPI(stdRestNm)
@@ -76,19 +87,9 @@ class RestAreaRepositoryImpl(
         return restAreaFoodList
     }
 
-    suspend fun getRestAreaFoodFromAPI(stdRestNm: String) : List<RestAreaFood> {
-        lateinit var restAreaFoodList: List<RestAreaFood>
-        try {
-            val response = restAreaFoodRemoteDataSource.getRestAreaFood(stdRestNm)
-            val body = response.body()
-
-            if (body!=null){
-                restAreaFoodList = listOf(body)
-            }
-
-        } catch (exception: Exception) {
-            Log.i("TAG", exception.message.toString())
-        }
-        return restAreaFoodList
+    suspend fun getRestAreaFoodFromAPI(stdRestNm: String) : Resource<RestAreaFood> {
+        return responseToFoodResource(
+            restAreaFoodRemoteDataSource.getRestAreaFood(stdRestNm)
+        )
     }
 }

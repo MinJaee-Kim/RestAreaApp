@@ -28,9 +28,9 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.homeBtn.setOnClickListener {
-            val responseLiveData = viewModel.getDirections("128.416926, 34.885074", "126.9776692, 37.5591786")
-            Log.i("TAG", responseLiveData.toString())
+            viewModel.getDirections("128.416926, 34.885074", "126.9776692, 37.5591786")
             viewModel.getSearch(37.5591786, 126.9776692, 20000, "휴게소")
+            viewModel.getFoods("서울")
         }
     }
 }

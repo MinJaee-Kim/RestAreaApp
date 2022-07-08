@@ -18,7 +18,7 @@ class NetModule {
     fun provideRetrofit():Retrofit{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.NAVER_API_URL)
+            .baseUrl(BuildConfig.OPEN_API_URL)
             .build()
     }
 

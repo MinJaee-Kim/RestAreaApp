@@ -16,22 +16,22 @@ class DirectionRepositoryImpl(
     override suspend fun getDirection(
         start: String,
         goal: String
-    ): Response<GetDirections> {
+    ): GetDirections {
         return getDirectionFromCache(start, goal)
     }
 
     suspend fun getDirectionFromCache(
         start: String,
         goal: String
-    ) : Response<GetDirections> {
-        lateinit var direction: Response<GetDirections>
+    ) : GetDirections {
+        lateinit var direction: GetDirections
         try {
             direction = directionCacheDataSource.getDirectionFromCache()
         } catch (exception: Exception) {
             Log.i("TAG", exception.message.toString())
         }
 
-        if (direction.isSuccessful){
+        if (false){
             return direction
         } else {
             direction = getDirectionFromAPI(start, goal)
@@ -44,18 +44,17 @@ class DirectionRepositoryImpl(
     suspend fun getDirectionFromAPI(
         start: String,
         goal: String
-    ) : Response<GetDirections> {
-        lateinit var direction: Response<GetDirections>
+    ) : GetDirections {
+        lateinit var direction: GetDirections
 
         try {
             val response = directionRemoteDataSource.getDirection(start, goal)
-//            val body = response.body()
-
-            if (direction.isSuccessful) {
-                direction = response
+            val body = response.body()
+            if (body != null) {
+                direction = body
             }
         } catch (exception: Exception) {
-            Log.i("TAG", exception.message.toString())
+            Log.i("dr", exception.message.toString())
         }
 
         return direction

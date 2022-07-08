@@ -4,6 +4,6 @@ import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import retrofit2.Response
 
 interface DirectionCacheDataSource {
-    suspend fun getDirectionFromCache(): Response<GetDirections>
-    suspend fun saveDirectionFromCache(direction:Response<GetDirections>)
+    suspend fun getDirectionFromCache(): GetDirections
+    suspend fun saveDirectionFromCache(direction:GetDirections)
 }

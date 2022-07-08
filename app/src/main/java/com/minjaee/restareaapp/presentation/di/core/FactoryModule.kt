@@ -2,6 +2,7 @@ package com.minjaee.restareaapp.presentation.di.core
 
 import android.app.Application
 import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
+import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaFoodUseCase
 import com.minjaee.restareaapp.domain.usecase.search.GetSearchAreaUseCase
 import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModelFactory
 import dagger.Module
@@ -18,12 +19,14 @@ class FactoryModule {
     fun provideRestAreaViewModelFactory(
         application: Application,
         getDirectionUseCase: GetDirectionUseCase,
-        getSearchAreaUseCase: GetSearchAreaUseCase
+        getSearchAreaUseCase: GetSearchAreaUseCase,
+        getRestAreaFoodUseCase: GetRestAreaFoodUseCase
     ): RestAreaViewModelFactory{
         return RestAreaViewModelFactory(
             application,
             getDirectionUseCase,
-            getSearchAreaUseCase
+            getSearchAreaUseCase,
+            getRestAreaFoodUseCase
         )
     }
 }

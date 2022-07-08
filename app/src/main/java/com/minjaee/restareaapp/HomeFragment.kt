@@ -27,13 +27,18 @@ class HomeFragment : Fragment() {
         viewModel = (activity as MainActivity).viewModel
         val responseLiveData = viewModel.getDirections("128.416926, 34.885074", "126.9776692, 37.5591786")
 
-        responseLiveData.observe(viewLifecycleOwner, Observer {
-            Log.i("sdaf", it.message())
-        })
+        viewModel.directions.observe(viewLifecycleOwner) { resource ->
+            Log.i("sdaf", resource.message)
+        }
 
         viewModel.searchs.observe(viewLifecycleOwner) { resources ->
             Log.i("TAG", resources.toString())
         }
+
+        viewModel.foods.observe(viewLifecycleOwner) { resources ->
+            Log.i("TAG", resources.data!!.message)
+        }
+        //TODO
         //TODO
     }
 }

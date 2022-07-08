@@ -40,13 +40,12 @@ class RestAreaSerivceTest {
     fun getKeyWordSearch_sendRequest_receivedExpected() {
         runBlocking {
             enqueueMockResponse("searchresponse.json")
-            val responseBody = restAreaService.getKeyWordSearch(37.5591786, 126.9776692, 20000).body()
-            val responseList = listOf(responseBody)
-            val response = responseList[0]
+            val responseBody = restAreaService.getRestAreaFood("서울").body()
             val request = server.takeRequest()
+
             assertThat(responseBody).isNotNull()
-            println(response)
-//            assertThat(request).isEqualTo("GET /v2/local/search/keyword.json?y=37.5591786&x=126.9776692&radius=20000&query=%EC%B9%B4%ED%8E%98 HTTP/1.1")
+            println(request.path)
+            println(responseBody?.message)
         }
     }
 
