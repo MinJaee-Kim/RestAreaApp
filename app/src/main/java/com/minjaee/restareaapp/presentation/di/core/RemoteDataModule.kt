@@ -1,6 +1,8 @@
 package com.minjaee.restareaapp.presentation.di.core
 
+import com.minjaee.restareaapp.data.api.DirectionService
 import com.minjaee.restareaapp.data.api.RestAreaService
+import com.minjaee.restareaapp.data.api.SearchService
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionRemoteDataSource
 import com.minjaee.restareaapp.data.repository.direction.datasourceimpl.DirectionRemoteDataSourceImpl
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodRemoteDataSource
@@ -32,13 +34,13 @@ class RemoteDataModule {
 
     @Singleton
     @Provides
-    fun provideDirectionRemoteDataSource(restAreaService: RestAreaService):DirectionRemoteDataSource{
-        return DirectionRemoteDataSourceImpl(restAreaService)
+    fun provideDirectionRemoteDataSource(directionService: DirectionService):DirectionRemoteDataSource{
+        return DirectionRemoteDataSourceImpl(directionService)
     }
 
     @Singleton
     @Provides
-    fun provideSearchRemoteDataSource(restAreaService: RestAreaService):SearchRemoteDataSource{
-        return SearchRemoteDataSourceImpl(restAreaService)
+    fun provideSearchRemoteDataSource(searchService: SearchService):SearchRemoteDataSource{
+        return SearchRemoteDataSourceImpl(searchService)
     }
 }
