@@ -1,5 +1,6 @@
 package com.minjaee.restareaapp.presentation.di.core
 
+import com.google.gson.GsonBuilder
 import com.minjaee.restareaapp.BuildConfig
 import com.minjaee.restareaapp.data.api.DirectionService
 import com.minjaee.restareaapp.data.api.RestAreaService
@@ -31,8 +32,8 @@ class NetModule {
     @Named("Direction")
     fun provideDirectionRetrofit():Retrofit{
         return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.NAVER_API_URL)
+            .baseUrl("https://naveropenapi.apigw.ntruss.com/")
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
             .build()
     }
 

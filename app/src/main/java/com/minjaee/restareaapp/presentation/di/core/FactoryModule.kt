@@ -19,13 +19,11 @@ class FactoryModule {
     fun provideRestAreaViewModelFactory(
         application: Application,
         getDirectionUseCase: GetDirectionUseCase,
-        getSearchAreaUseCase: GetSearchAreaUseCase,
         getRestAreaFoodUseCase: GetRestAreaFoodUseCase
     ): RestAreaViewModelFactory{
         return RestAreaViewModelFactory(
             application,
             getDirectionUseCase,
-            getSearchAreaUseCase,
             getRestAreaFoodUseCase
         )
     }

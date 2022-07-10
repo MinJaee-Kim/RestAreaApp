@@ -2,15 +2,15 @@ package com.minjaee.restareaapp.data.repository.search.datasourceimpl
 
 import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
+import com.minjaee.restareaapp.data.util.Resource
 
 class SearchCacheDataSourceImpl : SearchCacheDataSource {
-    private var searchList = ArrayList<Document>()
-    override suspend fun getSearchFromCache(): List<Document> {
+    private lateinit var searchList: Resource<Document>
+    override suspend fun getSearchFromCache(): Resource<Document> {
         return searchList
     }
 
-    override suspend fun saveSearchFromCache(searchLog: List<Document>) {
-        searchList.clear()
-        searchList = ArrayList(searchLog)
+    override suspend fun saveSearchFromCache(searchLog: Resource<Document>) {
+        searchList = searchLog
     }
 }

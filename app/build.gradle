@@ -15,8 +15,8 @@ android {
         versionCode 1
         versionName "1.0"
         buildConfigField("String", "NAVER_API_ID", MY_NAVER_ID)
-        buildConfigField("String", "NAVER_API_URL", MY_KAKAO_URL)
-        buildConfigField("String", "NAVER_API_KEY", MY_KAKAO_KEY)
+        buildConfigField("String", "NAVER_API_KEY", MY_NAVER_KEY)
+        buildConfigField("String", "NAVER_API_URL", MY_NAVER_URL)
         buildConfigField("String", "KAKAO_API_KEY", MY_KAKAO_KEY)
         buildConfigField("String", "KAKAO_API_URL", MY_KAKAO_URL)
         buildConfigField("String", "NAVER_API_URL", MY_KAKAO_URL)
@@ -71,7 +71,7 @@ dependencies {
     def coroutines_version = "1.6.2"
     def dagger_version = "2.42"
     def retrofit_version = "2.9.0"
-    def Interceptor_version = "4.10.0"
+    def Interceptor_version = "5.0.0-alpha.3"
     def glide_version = "4.13.0"
     def nav_version = "2.5.0"
 
@@ -89,7 +89,6 @@ dependencies {
 
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.google.code.gson:gson:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.okhttp3:okhttp:$Interceptor_version"
 

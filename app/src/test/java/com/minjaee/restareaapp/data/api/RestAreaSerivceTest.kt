@@ -14,16 +14,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RestAreaSerivceTest {
     private lateinit var restAreaService:RestAreaService
+    private lateinit var directionService: DirectionService
     private lateinit var server: MockWebServer
 
     @Before
     fun setUp() {
         server = MockWebServer()
-        restAreaService = Retrofit.Builder()
+        directionService = Retrofit.Builder()
             .baseUrl(server.url(""))
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(RestAreaService::class.java)
+            .create(DirectionService::class.java)
     }
 
     private fun enqueueMockResponse(
@@ -40,12 +41,14 @@ class RestAreaSerivceTest {
     fun getKeyWordSearch_sendRequest_receivedExpected() {
         runBlocking {
             enqueueMockResponse("searchresponse.json")
-            val responseBody = restAreaService.getRestAreaFood("서울").body()
+            val responseBody = directionService.getDirection("","").body()
             val request = server.takeRequest()
 
             assertThat(responseBody).isNotNull()
             println(request.path)
-            println(responseBody?.message)
+            if (responseBody != null) {
+                println(responseBody.currentDateTime)
+            }
         }
     }
 

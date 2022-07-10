@@ -5,7 +5,9 @@ import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchLocalDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchRemoteDataSource
+import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.repository.SearchRepository
+import retrofit2.Response
 import java.lang.Exception
 
 class SearchRepositoryImpl(
@@ -13,12 +15,14 @@ class SearchRepositoryImpl(
     private val searchLocalDataSource: SearchLocalDataSource,
     private val searchRemoteDataSource: SearchRemoteDataSource
 ) : SearchRepository {
+    lateinit var searchList: Resource<Document>
+
     override suspend fun getSearchArea(
         y: Double,
         x: Double,
         radius: Int,
         query: String
-    ): List<Document> {
+    ): Resource<Document> {
         return getSearchFromCache(y, x, radius, query)
     }
 
@@ -30,20 +34,28 @@ class SearchRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    private fun responseToSearchResource(response: Response<Document>): Resource<Document> {
+        if (response.isSuccessful){
+            response.body()?.let { result ->
+                return Resource.Success(result)
+            }
+        }
+        return Resource.Error(response.message())
+    }
+
     suspend fun getSearchFromCache(
         y: Double,
         x: Double,
         radius: Int,
         query: String
-    ): List<Document> {
-        lateinit var searchList: List<Document>
+    ): Resource<Document> {
         try {
             searchList = searchCacheDataSource.getSearchFromCache()
         } catch (exception: Exception) {
             Log.i("TAG", exception.message.toString())
         }
 
-        if (searchList.size>0){
+        if (::searchList.isInitialized){
             return searchList
         } else {
             searchList = getSearchFromAPI(y, x, radius, query)
@@ -58,20 +70,10 @@ class SearchRepositoryImpl(
         x: Double,
         radius: Int,
         query: String
-    ): List<Document> {
-        lateinit var searchList: List<Document>
-        try {
-            val response = searchRemoteDataSource.getSearch(y, x, radius, query)
-            val body = response.body()
+    ): Resource<Document> {
+        return responseToSearchResource(
+            searchRemoteDataSource.getSearch(y, x, radius, query)
+        )
 
-            if (body!=null) {
-                searchList = listOf(body)
-            }
-
-        } catch (exception: Exception) {
-            Log.i("TAG", exception.message.toString())
-        }
-
-        return searchList
     }
 }

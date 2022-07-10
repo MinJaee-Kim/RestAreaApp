@@ -9,7 +9,6 @@ import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomC
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomRemoteDataSource
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.repository.RestAreaRepository
-import kotlinx.coroutines.delay
 import retrofit2.Response
 import java.lang.Exception
 
