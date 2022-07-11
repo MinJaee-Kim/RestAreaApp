@@ -6,35 +6,35 @@ import androidx.lifecycle.*
 import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
+import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaFoodUseCase
+import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaRoomUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class RestAreaViewModel(
     private val app:Application,
-    private val getDirectionUseCase: GetDirectionUseCase,
+    private val getRestAreaRoomUseCase: GetRestAreaRoomUseCase,
     private val getRestAreaFoodUseCase: GetRestAreaFoodUseCase
 ) : AndroidViewModel(app) {
-    val directions : MutableLiveData<Resource<GetDirections>> = MutableLiveData()
-    val searchs: MutableLiveData<List<Document>> = MutableLiveData()
+    val rooms : MutableLiveData<Resource<RestAreaRoom>> = MutableLiveData()
     val foods: MutableLiveData<Resource<RestAreaFood>> = MutableLiveData()
-
-    fun getDirections(start: String, goal: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
-            val apiResult2 = getDirectionUseCase.execute(start, goal)
-            directions.postValue(apiResult2!!)
+            val apiResult = getRestAreaFoodUseCase.execute(stdRestNm)
+            foods.postValue(apiResult!!)
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
     }
 
-    fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getRooms(serviceAreaName: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
-            val apiResult3 = getRestAreaFoodUseCase.execute(stdRestNm)
-            foods.postValue(apiResult3!!)
+            val apiResult = getRestAreaRoomUseCase.execute(serviceAreaName)
+            rooms.postValue(apiResult!!)
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }

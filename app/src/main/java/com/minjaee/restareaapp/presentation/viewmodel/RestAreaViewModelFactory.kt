@@ -5,17 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaFoodUseCase
-import com.minjaee.restareaapp.domain.usecase.search.GetSearchAreaUseCase
+import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaRoomUseCase
 
 class RestAreaViewModelFactory(
     private val app: Application,
-    private val getDirectionUseCase: GetDirectionUseCase,
+    private val getRestAreaRoomUseCase: GetRestAreaRoomUseCase,
     private val getRestAreaFoodUseCase: GetRestAreaFoodUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return RestAreaViewModel(
             app,
-            getDirectionUseCase,
+            getRestAreaRoomUseCase,
             getRestAreaFoodUseCase
         ) as T
     }

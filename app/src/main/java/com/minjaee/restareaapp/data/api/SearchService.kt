@@ -16,4 +16,10 @@ interface SearchService {
         @Query("query") query: String = "휴게소",
         @Header("Authorization") key: String = BuildConfig.KAKAO_API_KEY
     ): Response<Document>
+
+    @GET("v2/local/search/keyword.json")
+    suspend fun getKeyWordNoLocationSearch(
+        @Query("query") query: String,
+        @Header("Authorization") key: String = BuildConfig.KAKAO_API_KEY
+    ): Response<Document>
 }

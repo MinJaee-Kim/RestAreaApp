@@ -9,7 +9,9 @@ import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodR
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomRemoteDataSource
 import com.minjaee.restareaapp.data.repository.restarea.datasourceimpl.RestAreaFoodRemoteDataSourceImpl
 import com.minjaee.restareaapp.data.repository.restarea.datasourceimpl.RestAreaRoomRemoteDataSourceImpl
+import com.minjaee.restareaapp.data.repository.search.datasource.SearchNoLocationRemoteDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchRemoteDataSource
+import com.minjaee.restareaapp.data.repository.search.datasourceimpl.SearchNoLocationRemoteDataSourceImpl
 import com.minjaee.restareaapp.data.repository.search.datasourceimpl.SearchRemoteDataSourceImpl
 import dagger.Module
 import dagger.Provides
@@ -42,5 +44,11 @@ class RemoteDataModule {
     @Provides
     fun provideSearchRemoteDataSource(searchService: SearchService):SearchRemoteDataSource{
         return SearchRemoteDataSourceImpl(searchService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNoLocationSearchRemoteDataSource(searchService: SearchService):SearchNoLocationRemoteDataSource{
+        return SearchNoLocationRemoteDataSourceImpl(searchService)
     }
 }

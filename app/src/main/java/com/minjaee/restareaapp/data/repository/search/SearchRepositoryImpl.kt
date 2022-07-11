@@ -4,6 +4,7 @@ import android.util.Log
 import com.minjaee.restareaapp.data.model.keywordsearch.Document
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchLocalDataSource
+import com.minjaee.restareaapp.data.repository.search.datasource.SearchNoLocationRemoteDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchRemoteDataSource
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.repository.SearchRepository
@@ -13,7 +14,8 @@ import java.lang.Exception
 class SearchRepositoryImpl(
     private val searchCacheDataSource: SearchCacheDataSource,
     private val searchLocalDataSource: SearchLocalDataSource,
-    private val searchRemoteDataSource: SearchRemoteDataSource
+    private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val searchNoLocationRemoteDataSource: SearchNoLocationRemoteDataSource
 ) : SearchRepository {
     lateinit var searchList: Resource<Document>
 
@@ -32,6 +34,10 @@ class SearchRepositoryImpl(
 
     override suspend fun deleteSearchArea(document: Document) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getNoLocationSearchArea(query: String): Resource<Document> {
+        return getNoLocationSearchFromAPI(query)
     }
 
     private fun responseToSearchResource(response: Response<Document>): Resource<Document> {
@@ -74,6 +80,13 @@ class SearchRepositoryImpl(
         return responseToSearchResource(
             searchRemoteDataSource.getSearch(y, x, radius, query)
         )
+    }
 
+    suspend fun getNoLocationSearchFromAPI(
+        query: String
+    ): Resource<Document> {
+        return responseToSearchResource(
+            searchNoLocationRemoteDataSource.getSearch(query)
+        )
     }
 }

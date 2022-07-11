@@ -11,6 +11,7 @@ import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomR
 import com.minjaee.restareaapp.data.repository.search.SearchRepositoryImpl
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchLocalDataSource
+import com.minjaee.restareaapp.data.repository.search.datasource.SearchNoLocationRemoteDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchRemoteDataSource
 import com.minjaee.restareaapp.domain.repository.DirectionRepository
 import com.minjaee.restareaapp.domain.repository.RestAreaRepository
@@ -57,12 +58,14 @@ class RepositoryModule {
     fun provideSearchRepository(
         searchCacheDataSource: SearchCacheDataSource,
         searchLocalDataSource: SearchLocalDataSource,
-        searchRemoteDataSource: SearchRemoteDataSource
+        searchRemoteDataSource: SearchRemoteDataSource,
+        searchNoLocationRemoteDataSource: SearchNoLocationRemoteDataSource
     ):SearchRepository{
         return SearchRepositoryImpl(
             searchCacheDataSource,
             searchLocalDataSource,
-            searchRemoteDataSource
+            searchRemoteDataSource,
+            searchNoLocationRemoteDataSource
         )
     }
 }

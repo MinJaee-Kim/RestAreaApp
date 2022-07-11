@@ -24,8 +24,6 @@ class DirectionRepositoryImpl(
     private fun responseToDirectionResource(response: Response<GetDirections>): Resource<GetDirections> {
         if (response.isSuccessful){
             response.body()?.let { result ->
-                Log.i("TAG", result.toString())
-                Log.i("TAG", response.code().toString())
                 return Resource.Success(result)
             }
         }
@@ -48,7 +46,6 @@ class DirectionRepositoryImpl(
             directionList = getDirectionFromAPI(start, goal)
             directionCacheDataSource.saveDirectionFromCache(directionList)
         }
-        Log.i("TAG", directionList.toString())
 
         return directionList
     }

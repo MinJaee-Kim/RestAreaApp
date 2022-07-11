@@ -7,6 +7,7 @@ import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaFoodUseCase
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaRoomUseCase
 import com.minjaee.restareaapp.domain.usecase.search.DeleteSavedSearchUseCase
+import com.minjaee.restareaapp.domain.usecase.search.GetNoLocationSearchAreaUseCase
 import com.minjaee.restareaapp.domain.usecase.search.GetSearchAreaUseCase
 import com.minjaee.restareaapp.domain.usecase.search.SaveSearchUseCase
 import dagger.Module
@@ -48,6 +49,14 @@ class UseCaseModule {
         searchRepository: SearchRepository
     ): GetSearchAreaUseCase{
         return GetSearchAreaUseCase(searchRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetNoLocationSearchAreaUseCase(
+        searchRepository: SearchRepository
+    ): GetNoLocationSearchAreaUseCase{
+        return GetNoLocationSearchAreaUseCase(searchRepository)
     }
 
     @Singleton
