@@ -1,9 +1,9 @@
 package com.minjaee.restareaapp.data.repository.search.datasource
 
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 
 interface SearchLocalDataSource {
-    suspend fun getSearchFromDB():List<Document>
-    suspend fun saveSearchToDB(searchLog: List<Document>)
-    suspend fun deleteOne(document: Document)
+    suspend fun getSearchFromDB():List<SearchMap>
+    suspend fun saveSearchToDB(searchLog: List<SearchMap>)
+    suspend fun deleteOne(document: SearchMap)
 }

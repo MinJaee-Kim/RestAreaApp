@@ -1,16 +1,16 @@
 package com.minjaee.restareaapp.data.db
 
 import androidx.room.*
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 
 @Dao
 interface SearchLogDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveSearch(searchLog : List<Document>)
+    suspend fun saveSearch(searchLog : List<SearchMap>)
 
     @Delete
-    suspend fun deleteOne(document: Document)
+    suspend fun deleteOne(document: SearchMap)
 
-    @Query("SELECT * FROM search_log_data_table")
-    suspend fun getSearchLogs():List<Document>
+    @Query("SELECT * FROM search")
+    suspend fun getSearchLogs():List<SearchMap>
 }

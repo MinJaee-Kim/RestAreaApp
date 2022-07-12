@@ -43,7 +43,7 @@ class NetModule {
     fun provideSearchRetrofit():Retrofit{
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(BuildConfig.KAKAO_API_URL)
+            .baseUrl("https://dapi.kakao.com/")
             .build()
     }
 

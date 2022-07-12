@@ -41,19 +41,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         viewModel = (activity as MainActivity).viewModel
 
-        viewModel.searchs.observe(viewLifecycleOwner) { resources ->
-            Log.i("TAG", resources.toString())
-        }
 
         viewModel.foods.observe(viewLifecycleOwner) { resources ->
             resources.data?.let { Log.i("asdv", it.count.toString()) }
-        }
-
-        viewModel.directions.observe(viewLifecycleOwner) { resource ->
-            resource.data?.let {
-                Log.i("asdf", it.toString())
-                Log.i("asdf", it.toString())
-            }
         }
     }
 

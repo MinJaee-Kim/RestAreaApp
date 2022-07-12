@@ -2,6 +2,7 @@ package com.minjaee.restareaapp.presentation.di.core
 
 import android.app.Application
 import androidx.room.Room
+import com.minjaee.restareaapp.data.db.Converters
 import com.minjaee.restareaapp.data.db.SearchLogDAO
 import com.minjaee.restareaapp.data.db.SearchLogDatabase
 import dagger.Module
@@ -16,14 +17,16 @@ class DataBaseModule {
     @Singleton
     @Provides
     fun provideSearchLogDatabase(app: Application):SearchLogDatabase {
+        val instanceTypeConverters = Converters()
         return Room.databaseBuilder(app, SearchLogDatabase::class.java, "search_db")
             .fallbackToDestructiveMigration()
+            .addTypeConverter(instanceTypeConverters)
             .build()
     }
 
     @Singleton
     @Provides
     fun provideSearchLogDao(searchLogDatabase: SearchLogDatabase):SearchLogDAO{
-        return searchLogDatabase.searchLogDAO
+        return searchLogDatabase.searchLogDAO()
     }
 }

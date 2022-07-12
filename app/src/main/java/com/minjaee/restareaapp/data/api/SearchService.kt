@@ -1,7 +1,7 @@
 package com.minjaee.restareaapp.data.api
 
 import com.minjaee.restareaapp.BuildConfig
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -15,11 +15,11 @@ interface SearchService {
         @Query("radius") radius:Int,
         @Query("query") query: String = "휴게소",
         @Header("Authorization") key: String = BuildConfig.KAKAO_API_KEY
-    ): Response<Document>
+    ): Response<SearchMap>
 
     @GET("v2/local/search/keyword.json")
     suspend fun getKeyWordNoLocationSearch(
         @Query("query") query: String,
         @Header("Authorization") key: String = BuildConfig.KAKAO_API_KEY
-    ): Response<Document>
+    ): Response<SearchMap>
 }

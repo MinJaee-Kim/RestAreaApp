@@ -1,5 +1,6 @@
 package com.minjaee.restareaapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.homeBtn.setOnClickListener {
-            viewModel.getFoods("서울")
+            val intent = Intent(this, SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 }

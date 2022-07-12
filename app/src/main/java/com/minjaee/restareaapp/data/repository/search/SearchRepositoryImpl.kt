@@ -1,7 +1,7 @@
 package com.minjaee.restareaapp.data.repository.search
 
 import android.util.Log
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchLocalDataSource
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchNoLocationRemoteDataSource
@@ -17,14 +17,14 @@ class SearchRepositoryImpl(
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchNoLocationRemoteDataSource: SearchNoLocationRemoteDataSource
 ) : SearchRepository {
-    lateinit var searchList: Resource<Document>
+    lateinit var searchList: Resource<SearchMap>
 
     override suspend fun getSearchArea(
         y: Double,
         x: Double,
         radius: Int,
         query: String
-    ): Resource<Document> {
+    ): Resource<SearchMap> {
         return getSearchFromCache(y, x, radius, query)
     }
 
@@ -32,17 +32,19 @@ class SearchRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun deleteSearchArea(document: Document) {
+    override suspend fun deleteSearchArea(document: SearchMap) {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getNoLocationSearchArea(query: String): Resource<Document> {
+    override suspend fun getNoLocationSearchArea(query: String): Resource<SearchMap> {
         return getNoLocationSearchFromAPI(query)
     }
 
-    private fun responseToSearchResource(response: Response<Document>): Resource<Document> {
+    private fun responseToSearchResource(response: Response<SearchMap>): Resource<SearchMap> {
         if (response.isSuccessful){
             response.body()?.let { result ->
+                Log.i("TAG", response.body().toString())
+                Log.i("TAG", response.code().toString())
                 return Resource.Success(result)
             }
         }
@@ -54,7 +56,7 @@ class SearchRepositoryImpl(
         x: Double,
         radius: Int,
         query: String
-    ): Resource<Document> {
+    ): Resource<SearchMap> {
         try {
             searchList = searchCacheDataSource.getSearchFromCache()
         } catch (exception: Exception) {
@@ -62,6 +64,7 @@ class SearchRepositoryImpl(
         }
 
         if (::searchList.isInitialized){
+            searchList = getSearchFromAPI(y, x, radius, query)
             return searchList
         } else {
             searchList = getSearchFromAPI(y, x, radius, query)
@@ -76,7 +79,7 @@ class SearchRepositoryImpl(
         x: Double,
         radius: Int,
         query: String
-    ): Resource<Document> {
+    ): Resource<SearchMap> {
         return responseToSearchResource(
             searchRemoteDataSource.getSearch(y, x, radius, query)
         )
@@ -84,7 +87,7 @@ class SearchRepositoryImpl(
 
     suspend fun getNoLocationSearchFromAPI(
         query: String
-    ): Resource<Document> {
+    ): Resource<SearchMap> {
         return responseToSearchResource(
             searchNoLocationRemoteDataSource.getSearch(query)
         )

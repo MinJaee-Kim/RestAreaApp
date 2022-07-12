@@ -1,14 +1,9 @@
 package com.minjaee.restareaapp.presentation.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
-import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.search.GetNoLocationSearchAreaUseCase
 import com.minjaee.restareaapp.domain.usecase.search.GetSearchAreaUseCase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class SearchViewModelFactory(
     private val app: Application,

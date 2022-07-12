@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.search.GetNoLocationSearchAreaUseCase
 import com.minjaee.restareaapp.domain.usecase.search.GetSearchAreaUseCase
@@ -13,12 +13,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
-    app: Application,
+    private val app: Application,
     private val getSearchAreaUseCase: GetSearchAreaUseCase,
     private val getNoLocationSearchAreaUseCase: GetNoLocationSearchAreaUseCase
 ) : AndroidViewModel(app) {
-    val search: MutableLiveData<Resource<Document>> = MutableLiveData()
-    val noLocationSearch: MutableLiveData<Resource<Document>> = MutableLiveData()
+    val search: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
+    val noLocationSearch: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
 
     fun getSearch(y: Double, x: Double, radius: Int, query: String) = viewModelScope.launch(Dispatchers.IO) {
         try {

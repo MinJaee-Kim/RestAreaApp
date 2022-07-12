@@ -1,8 +1,7 @@
 package com.minjaee.restareaapp.data.repository.search.datasourceimpl
 
-import com.minjaee.restareaapp.data.api.RestAreaService
 import com.minjaee.restareaapp.data.api.SearchService
-import com.minjaee.restareaapp.data.model.keywordsearch.Document
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchRemoteDataSource
 import retrofit2.Response
 
@@ -12,5 +11,5 @@ class SearchRemoteDataSourceImpl(private val searchService: SearchService) : Sea
         x : Double,
         radius : Int,
         query: String
-    ): Response<Document> = searchService.getKeyWordSearch(y, x, radius, query)
+    ): Response<SearchMap> = searchService.getKeyWordSearch(y, x, radius, query)
 }
