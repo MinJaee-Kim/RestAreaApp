@@ -1,9 +1,14 @@
 package com.minjaee.restareaapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
@@ -19,9 +24,12 @@ import javax.inject.Inject
 class SearchActivity : AppCompatActivity() {
     @Inject
     lateinit var factory: SearchViewModelFactory
-    private lateinit var viewModel: SearchViewModel
+    lateinit var viewModel: SearchViewModel
     private lateinit var binding:ActivitySearchBinding
     private lateinit var adapter: SearchAdapter
+    private lateinit var start: String
+    private lateinit var goal: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -30,31 +38,54 @@ class SearchActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, factory)
             .get(SearchViewModel::class.java)
 
+        initBinding()
         initRecyclerView()
+    }
+
+    private fun initBinding() {
+        val goalIntent = Intent(this, GoalSearchActivity::class.java)
+        val startIntent = Intent(this, GoalSearchActivity::class.java)
+        binding.searchStartEt.setOnTouchListener(object : View.OnTouchListener{
+            override fun onTouch(p0: View?, event: MotionEvent?): Boolean {
+                when (event?.action) {
+                    MotionEvent.ACTION_UP -> {
+                        startActivity(startIntent)
+                    }
+                }
+                return true
+            }
+        })
+
+        binding.searchGoalEt.setOnTouchListener(object : View.OnTouchListener{
+            override fun onTouch(p0: View?, event: MotionEvent?): Boolean {
+                when (event?.action) {
+                    MotionEvent.ACTION_UP -> {
+                        startActivity(goalIntent)
+                    }
+                }
+                return true
+            }
+        })
     }
 
     private fun initRecyclerView() {
         binding.searchRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = SearchAdapter()
         binding.searchRecyclerView.adapter = adapter
+        adapter.setOnItemClickListener {  }
         bindingSearchList()
     }
 
     private fun bindingSearchList(){
-        binding.searchEt.doOnTextChanged { text, start, before, count ->
-            if (text!="") {
-                viewModel.getNoLocationSearch(text.toString())
-            }
-        }
-        viewModel.noLocationSearch.observe(this) { response ->
-            response.data.let {
-                if (response!=null) {
-                    adapter.setList(listOf(response.data) as List<SearchMap>)
-                    adapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(this, "데이터 에러", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
+        viewModel.goal.observe(this, Observer {
+            binding.searchGoalEt.setText(it.toString())
+            Log.i("TAG", it.toString())
+        })
+
+        viewModel.updateGoal("asdf")
+        //TODO
+//        if (viewModel.start != null) {
+//            binding.searchStartEt.setText(viewModel.start)
+//        }
     }
 }

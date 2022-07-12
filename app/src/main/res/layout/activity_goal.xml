@@ -5,32 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".GoalSearchActivity">
 
     <EditText
-        android:id="@+id/searchStartEt"
+        android:id="@+id/goalSearchEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/start"
+        android:hint="@string/goal"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/searchGoalEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/goal"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchRecyclerView"
+        android:id="@+id/goalRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

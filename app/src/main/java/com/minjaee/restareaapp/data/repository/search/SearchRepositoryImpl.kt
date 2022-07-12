@@ -43,8 +43,6 @@ class SearchRepositoryImpl(
     private fun responseToSearchResource(response: Response<SearchMap>): Resource<SearchMap> {
         if (response.isSuccessful){
             response.body()?.let { result ->
-                Log.i("TAG", response.body().toString())
-                Log.i("TAG", response.code().toString())
                 return Resource.Success(result)
             }
         }

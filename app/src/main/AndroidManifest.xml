@@ -23,6 +23,12 @@
         <activity
             android:name=".SearchActivity"
             android:exported="false" />
+        <activity
+            android:name=".StartSearchActivity"
+            android:exported="false" />
+        <activity
+            android:name=".GoalSearchActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"

@@ -8,29 +8,16 @@
     tools:context=".SearchActivity">
 
     <EditText
-        android:id="@+id/searchStartEt"
+        android:id="@+id/startSearchEt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
         android:hint="@string/start"
         android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/searchGoalEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/goal"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchRecyclerView"
+        android:id="@+id/startRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

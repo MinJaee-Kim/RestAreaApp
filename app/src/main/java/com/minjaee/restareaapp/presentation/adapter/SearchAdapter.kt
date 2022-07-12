@@ -3,15 +3,15 @@ package com.minjaee.restareaapp.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.minjaee.restareaapp.data.model.keywordsearch.Documents
 import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.databinding.SearchListItemBinding
 
 class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-    private val searchList = ArrayList<SearchMap>()
+    private lateinit var searchList: SearchMap
 
-    fun setList(search: List<SearchMap>){
-        searchList.clear()
-        searchList.addAll(search)
+    fun setList(search: SearchMap){
+        searchList = search
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -21,19 +21,35 @@ class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(searchList[position], position)
+        holder.bind(searchList.documents[position])
     }
 
     override fun getItemCount(): Int {
-        return searchList.size
+        if (::searchList.isInitialized) {
+            return searchList.documents.size
+        } else {
+            return 0
+        }
     }
 
     inner class SearchViewHolder(
         val binding: SearchListItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
-        fun bind(searchMap: SearchMap, position: Int) {
-            binding.tvName.text = searchMap.documents[position].addressName
-            binding.tvAddress.text = searchMap.documents[position].roadAddressName
+        fun bind(documents: Documents) {
+            binding.tvName.text = documents.placeName
+            binding.tvAddress.text = documents.addressName
+
+            binding.root.setOnClickListener {
+                onItemClickListener?.let {
+                    it(documents)
+                }
+            }
         }
+    }
+
+    private var onItemClickListener :((Documents)->Unit)?=null
+
+    fun setOnItemClickListener(listener: (Documents)->Unit){
+        onItemClickListener = listener
     }
 }
