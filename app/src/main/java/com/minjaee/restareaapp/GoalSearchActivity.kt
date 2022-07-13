@@ -30,8 +30,7 @@ class GoalSearchActivity : AppCompatActivity() {
         binding = ActivityGoalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, factory)
-            .get(SearchViewModel::class.java)
+        viewModel = (SearchActivity).viewModel
 
         initRecyclerView()
     }
@@ -42,7 +41,7 @@ class GoalSearchActivity : AppCompatActivity() {
         binding.goalRecyclerView.adapter = adapter
         adapter.setOnItemClickListener {
             viewModel.updateGoal(it.placeName)
-            viewModel.goalLocation = it.x+","+it.y
+            viewModel.updateGoalLocation(it.x+","+it.y)
             finish()
         }
         bindingSearchList()

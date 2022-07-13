@@ -21,14 +21,11 @@ class SearchViewModel(
     val search: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
     val noLocationSearch: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
 
-    private var start = MutableLiveData<String>()
-    val startData : LiveData<String>
-    get() = start
+    var start = MutableLiveData<String>()
+    var goal = MutableLiveData<String>()
 
-    val goal = MutableLiveData<String>()
-
-    var startLocation: String? = null
-    var goalLocation: String? = null
+    lateinit var startLocation: String
+    lateinit var goalLocation: String
 
     fun getSearch(y: Double, x: Double, radius: Int, query: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
@@ -50,5 +47,17 @@ class SearchViewModel(
 
     fun updateGoal(goal: String){
         this.goal.postValue(goal)
+    }
+
+    fun updateStart(start: String){
+        this.start.postValue(start)
+    }
+
+    fun updateStartLocation(startLocation: String){
+        this.startLocation = startLocation
+    }
+
+    fun updateGoalLocation(goalLocation: String){
+        this.goalLocation = goalLocation
     }
 }

@@ -1,5 +1,6 @@
 package com.minjaee.restareaapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -24,7 +25,9 @@ import javax.inject.Inject
 class SearchActivity : AppCompatActivity() {
     @Inject
     lateinit var factory: SearchViewModelFactory
-    lateinit var viewModel: SearchViewModel
+    companion object{
+        lateinit var viewModel: SearchViewModel
+    }
     private lateinit var binding:ActivitySearchBinding
     private lateinit var adapter: SearchAdapter
     private lateinit var start: String
@@ -44,7 +47,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun initBinding() {
         val goalIntent = Intent(this, GoalSearchActivity::class.java)
-        val startIntent = Intent(this, GoalSearchActivity::class.java)
+        val startIntent = Intent(this, StartSearchActivity::class.java)
         binding.searchStartEt.setOnTouchListener(object : View.OnTouchListener{
             override fun onTouch(p0: View?, event: MotionEvent?): Boolean {
                 when (event?.action) {
@@ -79,13 +82,17 @@ class SearchActivity : AppCompatActivity() {
     private fun bindingSearchList(){
         viewModel.goal.observe(this, Observer {
             binding.searchGoalEt.setText(it.toString())
-            Log.i("TAG", it.toString())
         })
 
-        viewModel.updateGoal("asdf")
-        //TODO
-//        if (viewModel.start != null) {
-//            binding.searchStartEt.setText(viewModel.start)
-//        }
+        viewModel.start.observe(this, Observer {
+            binding.searchStartEt.setText(it.toString())
+        })
+
+        binding.button2.setOnClickListener {
+            intent.putExtra("startLocation",viewModel.startLocation)
+            intent.putExtra("goalLocation",viewModel.goalLocation)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 }
