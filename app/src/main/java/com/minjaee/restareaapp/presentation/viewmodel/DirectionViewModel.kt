@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
+import com.naver.maps.geometry.LatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -16,6 +17,7 @@ class DirectionViewModel(
     private val getDirectionUseCase: GetDirectionUseCase
 ) : AndroidViewModel(app) {
     val directions : MutableLiveData<Resource<GetDirections>> = MutableLiveData()
+    val markers: MutableLiveData<HashSet<LatLng>> = MutableLiveData()
 
     fun getDirections(start: String, goal: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
@@ -24,5 +26,9 @@ class DirectionViewModel(
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
+    }
+
+    fun updateMarkers(hashSet: HashSet<LatLng>){
+        markers.postValue(hashSet)
     }
 }

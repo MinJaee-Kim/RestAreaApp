@@ -25,7 +25,7 @@ class SearchRepositoryImpl(
         radius: Int,
         query: String
     ): Resource<SearchMap> {
-        return getSearchFromCache(y, x, radius, query)
+        return getSearchFromAPI(y, x, radius, query)
     }
 
     override suspend fun saveSearchArea() {

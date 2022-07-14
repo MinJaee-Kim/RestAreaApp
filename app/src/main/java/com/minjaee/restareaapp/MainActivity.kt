@@ -8,40 +8,45 @@ import android.util.Log
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.minjaee.restareaapp.databinding.ActivityMainBinding
-import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModel
-import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModelFactory
-import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
-import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModelFactory
+import com.minjaee.restareaapp.presentation.viewmodel.*
+import com.naver.maps.geometry.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var factory: DirectionViewModelFactory
-    lateinit var viewModel: DirectionViewModel
+    lateinit var directionFactory: DirectionViewModelFactory
+    @Inject
+    lateinit var searchFactory: SearchViewModelFactory
+    lateinit var directionViewModel: DirectionViewModel
+    lateinit var searchViewModel: SearchViewModel
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var start: String
-    private lateinit var goal: String
+
+    private val nameHashSet = HashSet<String>()
+    private val directionHashSet = HashSet<LatLng>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        viewModel = ViewModelProvider(this, factory)
+        directionViewModel = ViewModelProvider(this, directionFactory)
             .get(DirectionViewModel::class.java)
-//        viewModel2 = ViewModelProvider(this)
-//            .get(SearchViewModel::class.java)
+        searchViewModel = ViewModelProvider(this, searchFactory)
+            .get(SearchViewModel::class.java)
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         val navController = navHostFragment.navController
 
         activityResult()
+        viewModelObserver()
     }
 
     private fun activityResult() {
@@ -50,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 ActivityResultContracts.StartActivityForResult()
             ) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    viewModel.getDirections(
+                    directionViewModel.getDirections(
                         result.data?.getStringExtra("startLocation").toString(),
                         result.data?.getStringExtra("goalLocation").toString()
                     )
@@ -63,5 +68,34 @@ class MainActivity : AppCompatActivity() {
             activityResultLauncher.launch(intent)
         }
 
+    }
+
+    private fun viewModelObserver() {
+//        searchViewModel.search.observe(this, Observer {
+//            for (i in it.data?.documents?.indices!!) {
+//                if (it.data.documents.get(i).categoryName.endsWith("고속도로휴게소")){
+//                    nameHashSet.add(it.data.documents.get(i).placeName.substring(
+//                        0,
+//                        it.data.documents.get(i).placeName.indexOf("휴게소")) + "(" +
+//                            it.data.documents.get(i).placeName.substring(
+//                                it.data.documents.get(i).placeName.indexOf(" ")+1,
+//                                it.data.documents.get(i).placeName.indexOf("방향")
+//                            )
+//                            + ")"
+//                    )
+//
+//                    directionHashSet.add(LatLng(
+//                        it.data.documents.get(i).y.toDouble(),
+//                        it.data.documents.get(i).x.toDouble())
+//                    )
+//                }
+//            }
+//            Log.i("TAG", "onCreate: "+ nameHashSet)
+////            directionViewModel.updateMarkers(directionHashSet)
+//        })
+
+//        searchViewModel.provideListener.observe(this, Observer {
+//            Log.i("TAG", "확인")
+//        })
     }
 }

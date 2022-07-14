@@ -14,6 +14,7 @@ interface SearchService {
         @Query("x") x:Double,
         @Query("radius") radius:Int,
         @Query("query") query: String = "휴게소",
+        @Query("size") size: Int = 5,
         @Header("Authorization") key: String = BuildConfig.KAKAO_API_KEY
     ): Response<SearchMap>
 
