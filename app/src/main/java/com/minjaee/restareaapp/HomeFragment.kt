@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.minjaee.restareaapp.databinding.FragmentHomeBinding
 import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
@@ -17,9 +19,6 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.flow
-import kotlin.math.log
 
 
 class HomeFragment : Fragment(), OnMapReadyCallback {
@@ -27,8 +26,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var directionViewModel: DirectionViewModel
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
-
-    private var completeListener = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +46,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         directionViewModel = (activity as MainActivity).directionViewModel
         searchViewModel = (activity as MainActivity).searchViewModel
+
+        fragmentHomeBinding.button.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_exploreFragment)
+        }
+
+        fragmentHomeBinding.button3.setOnClickListener {
+            it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
+
+        val navController = findNavController()
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Location")
+            ?.observe(viewLifecycleOwner) { result ->
+                directionViewModel.getDirections(
+                    result.substring(0, result.indexOf("+")),
+                    result.substring(result.indexOf("+")+1)
+                )
+            }
     }
 
     override fun onMapReady(naverMap: NaverMap) {

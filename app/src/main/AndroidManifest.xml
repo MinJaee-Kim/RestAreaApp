@@ -22,16 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RestAreaApp"
         tools:targetApi="31">
-        <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".StartSearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GoalSearchActivity"
-            android:exported="false" />
-
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="7krlgw2p9j" />
