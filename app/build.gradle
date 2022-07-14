@@ -25,6 +25,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    packagingOptions {
+        exclude 'META-INF/react-native-webview_release.kotlin_module'
+    }
+
 
     buildTypes {
         debug {

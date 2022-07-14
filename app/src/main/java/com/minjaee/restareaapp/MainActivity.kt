@@ -94,8 +94,31 @@ class MainActivity : AppCompatActivity() {
 ////            directionViewModel.updateMarkers(directionHashSet)
 //        })
 
-//        searchViewModel.provideListener.observe(this, Observer {
-//            Log.i("TAG", "확인")
-//        })
+        searchViewModel.provideListener.observe(this, Observer {
+            for (i in searchViewModel.searchList.indices){
+                for (j in searchViewModel.searchList.get(i).data?.documents?.indices!!) {
+                    if (searchViewModel.searchList.get(i).data!!.documents.get(j).categoryName.endsWith("고속도로휴게소")){
+                        nameHashSet.add(searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.substring(
+                            0,
+                            searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.indexOf("휴게소")) + "(" +
+                                searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.substring(
+                                    searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.indexOf(" ")+1,
+                                    searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.indexOf("방향")
+                                )
+                                + ")"
+                        )
+
+                        directionHashSet.add(LatLng(
+                            searchViewModel.searchList.get(i).data!!.documents.get(j).y.toDouble(),
+                            searchViewModel.searchList.get(i).data!!.documents.get(j).x.toDouble())
+                        )
+                    }
+                }
+            }
+
+            Log.i("TAG", "onCreate: "+ nameHashSet)
+            directionViewModel.updateMarkers(directionHashSet)
+//            Log.i("TAG", "onCreate: "+ directionHashSet)
+        })
     }
 }

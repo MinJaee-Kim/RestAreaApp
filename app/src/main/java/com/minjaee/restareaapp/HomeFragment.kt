@@ -57,22 +57,25 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private fun viewModelObserver(naverMap: NaverMap) {
         val path = PathOverlay()
-        val marker = Marker()
         val coords = mutableListOf<LatLng>()
         directionViewModel.markers.observe(viewLifecycleOwner) { directions ->
-
-            directions.forEach {
-                marker.position = LatLng(it.longitude, it.latitude)
+            val markerList = ArrayList<Marker>()
+            var index = 0
+            for (i in directions.indices) {
+                markerList.add(Marker())
             }
 
-            if (directions.isNotEmpty()) {
-                marker.map = naverMap
+            directions.forEach {
+                markerList.get(index).position = LatLng(it.latitude, it.longitude)
+                markerList.get(index).map = naverMap
+                index++
             }
         }
 
         directionViewModel.directions.observe(viewLifecycleOwner) { resources ->
             resources.data?.let {
                 runBlocking {
+                    //TODO 로딩바 달기
                     launch {
                         for (i in resources.data.route.traoptimal.get(0).path.indices) {
                             coords.add(
@@ -90,13 +93,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                                 )
                             }
                         }
-                        Log.i("TAG", "asdf")
                     }.join()
                 }
 
 
-                //TODO
-                Log.i("TAG", searchViewModel.searchList.get(0).data.toString())
+                //TODO 리스너 달기
+                searchViewModel.updateProvideListener()
             }
 
 

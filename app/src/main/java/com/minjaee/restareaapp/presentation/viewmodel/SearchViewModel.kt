@@ -32,9 +32,6 @@ class SearchViewModel(
     lateinit var startLocation: String
     lateinit var goalLocation: String
 
-    init {
-        provideListener.value = 0
-    }
 
     suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
