@@ -1,24 +1,36 @@
 package com.minjaee.restareaapp.presentation.adapter
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.minjaee.restareaapp.HomeFragment
+import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
 import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.databinding.ExploreListItemBinding
+import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
 
-class RoomsAdapter:RecyclerView.Adapter<RoomsAdapter.RoomsViewHolder>() {
+class RoomsAdapter(val context: Context):RecyclerView.Adapter<RoomsAdapter.RoomsViewHolder>() {
     private lateinit var roomsList:ArrayList<Resource<RestAreaRoom>>
+    private lateinit var foodsList:ArrayList<Resource<RestAreaFood>>
+    private lateinit var foodsAdapter: FoodsAdapter
     private var flipPosition = -1;
 
-    fun setList(roomsList: ArrayList<Resource<RestAreaRoom>>){
+    fun setList(
+        roomsList: ArrayList<Resource<RestAreaRoom>>,
+        foodsList: ArrayList<Resource<RestAreaFood>>){
         this.roomsList = roomsList
+        this.foodsList = foodsList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomsViewHolder {
         val binding = ExploreListItemBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
+
         return RoomsViewHolder(binding)
     }
 
@@ -40,6 +52,10 @@ class RoomsAdapter:RecyclerView.Adapter<RoomsAdapter.RoomsViewHolder>() {
             substring(0, restAreaRoom.get(position).data?.list?.get(0)?.convenience!!.length-1).
             replace("|", ", ")
 
+            binding.foodsRv.adapter = FoodsAdapter(foodsList, position)
+            binding.foodsRv.layoutManager = LinearLayoutManager(context)
+
+
             binding.root.setOnClickListener {
                 onItemClickListener?.let {
                     it(restAreaRoom[position])
@@ -52,7 +68,7 @@ class RoomsAdapter:RecyclerView.Adapter<RoomsAdapter.RoomsViewHolder>() {
             }
 
             binding.areaBtn.setOnClickListener {
-                //TODO 애니메이션
+                //TODO 애니메이션, 버튼 바꾸기
                 if (binding.foodsRv.visibility == View.GONE) {
                     binding.foodsRv.visibility = View.VISIBLE
                 } else {
