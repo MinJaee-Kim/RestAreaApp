@@ -1,8 +1,9 @@
-package com.minjaee.restareaapp.presentation.viewmodel
+package com.minjaee.restareaapp.presentation .viewmodel
 
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
 import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.util.Resource
@@ -19,21 +20,29 @@ class RestAreaViewModel(
 ) : AndroidViewModel(app) {
     val rooms : MutableLiveData<Resource<RestAreaRoom>> = MutableLiveData()
     val foods: MutableLiveData<Resource<RestAreaFood>> = MutableLiveData()
-    fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
+
+    val routeRoomsList: ArrayList<Resource<RestAreaRoom>> = ArrayList()
+    val routeFoodsList: ArrayList<Resource<RestAreaFood>> = ArrayList()
+
+    suspend fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val apiResult = getRestAreaFoodUseCase.execute(stdRestNm)
-            foods.postValue(apiResult!!)
+            if (apiResult != null) {
+                routeFoodsList.add(apiResult)
+            }
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
-    }
+    }.join()
 
-    fun getRooms(serviceAreaName: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getRooms(serviceAreaName: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val apiResult = getRestAreaRoomUseCase.execute(serviceAreaName)
-            rooms.postValue(apiResult!!)
+            if (apiResult.data?.list?.get(0)?.serviceAreaName!=null) {
+                routeRoomsList.add(apiResult)
+            }
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
-    }
+    }.join()
 }

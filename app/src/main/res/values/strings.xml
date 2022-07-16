@@ -5,4 +5,14 @@
 
     <string name="start">출발지 입력</string>
     <string name="goal">도착지 입력</string>
+
+    <string name="foodName">음식 이름</string>
+    <string name="foodCost">0 원</string>
+    <string name="foodEtc">그외</string>
+
+    <string name="restAreaName">휴게소 이름</string>
+    <string name="restAreaConvenience">휴게소 편의시설</string>
+    <string name="restAreaBrand">휴게소 유료시설</string>
+    <string name="restAreaBtn">펼치기</string>
+
 </resources>

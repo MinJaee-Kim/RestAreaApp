@@ -4,9 +4,7 @@ import com.minjaee.restareaapp.data.repository.direction.DirectionRepositoryImpl
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionCacheDataSource
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionRemoteDataSource
 import com.minjaee.restareaapp.data.repository.restarea.RestAreaRepositoryImpl
-import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodCacheDataSource
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodRemoteDataSource
-import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomCacheDataSource
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaRoomRemoteDataSource
 import com.minjaee.restareaapp.data.repository.search.SearchRepositoryImpl
 import com.minjaee.restareaapp.data.repository.search.datasource.SearchCacheDataSource
@@ -28,15 +26,11 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideRestAreaRepository(
-        restAreaFoodCacheDataSource: RestAreaFoodCacheDataSource,
         restAreaFoodRemoteDataSource: RestAreaFoodRemoteDataSource,
-        restAreaRoomCacheDataSource: RestAreaRoomCacheDataSource,
         restAreaRoomRemoteDataSource: RestAreaRoomRemoteDataSource
     ):RestAreaRepository{
         return RestAreaRepositoryImpl(
-            restAreaFoodCacheDataSource,
             restAreaFoodRemoteDataSource,
-            restAreaRoomCacheDataSource,
             restAreaRoomRemoteDataSource
         )
     }

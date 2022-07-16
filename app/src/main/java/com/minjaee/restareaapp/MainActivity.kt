@@ -18,8 +18,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var directionFactory: DirectionViewModelFactory
     @Inject
     lateinit var searchFactory: SearchViewModelFactory
+    @Inject
+    lateinit var restAreaFactory: RestAreaViewModelFactory
+
     lateinit var directionViewModel: DirectionViewModel
     lateinit var searchViewModel: SearchViewModel
+    lateinit var restAreaViewModel: RestAreaViewModel
 
     private lateinit var binding: ActivityMainBinding
 
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
             .get(DirectionViewModel::class.java)
         searchViewModel = ViewModelProvider(this, searchFactory)
             .get(SearchViewModel::class.java)
+        restAreaViewModel = ViewModelProvider(this, restAreaFactory)
+            .get(RestAreaViewModel::class.java)
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -64,7 +70,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            Log.i("TAG", "onCreate: "+ nameHashSet)
+
+            searchViewModel.updateLocationHashSet(nameHashSet)
             directionViewModel.updateMarkers(directionHashSet)
         })
     }

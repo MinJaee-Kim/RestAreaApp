@@ -18,11 +18,8 @@ class SearchViewModel(
     private val getNoLocationSearchAreaUseCase: GetNoLocationSearchAreaUseCase
 ) : AndroidViewModel(app) {
     val searchList: ArrayList<Resource<SearchMap>> = ArrayList()
-//    val search: LiveData<Resource<SearchMap>>
-//        get() {
-//            return searchList
-//        }
     val noLocationSearch: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
+    var locationHashSet: MutableLiveData<HashSet<String>> = MutableLiveData()
 
     var start = MutableLiveData<String>()
     var goal = MutableLiveData<String>()
@@ -37,7 +34,6 @@ class SearchViewModel(
         try {
             val apiResult = getSearchAreaUseCase.execute(y, x, radius, query)
             searchList.add(apiResult)
-//            search.postValue(apiResult)
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
@@ -70,5 +66,9 @@ class SearchViewModel(
 
     fun updateGoalLocation(goalLocation: String){
         this.goalLocation = goalLocation
+    }
+
+    fun updateLocationHashSet(locationHash: HashSet<String>){
+        this.locationHashSet.value = locationHash
     }
 }

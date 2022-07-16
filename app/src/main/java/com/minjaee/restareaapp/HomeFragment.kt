@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.minjaee.restareaapp.databinding.FragmentHomeBinding
 import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModel
+import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.MapView
@@ -26,6 +27,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var directionViewModel: DirectionViewModel
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    companion object {
+        lateinit var restAreaViewModel: RestAreaViewModel
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +50,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         fragmentHomeBinding = FragmentHomeBinding.bind(view)
         directionViewModel = (activity as MainActivity).directionViewModel
         searchViewModel = (activity as MainActivity).searchViewModel
+        restAreaViewModel = (activity as MainActivity).restAreaViewModel
 
         fragmentHomeBinding.button.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_exploreFragment)
@@ -102,21 +107,37 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                                 searchViewModel.getSearch(
                                     resources.data.route.traoptimal[0].path[i].get(1),
                                     resources.data.route.traoptimal[0].path[i].get(0),
-                                    10000,
+                                    3000,
                                     "휴게소",
                                 )
                             }
                         }
                     }.join()
+
+                    //TODO restArea 정보 가져오기
+                }
+                searchViewModel.updateProvideListener()
+
+
+                runBlocking {
+                    launch {
+                        searchViewModel.locationHashSet.value?.forEach {
+                            restAreaViewModel.getRooms(it)
+                            restAreaViewModel.getFoods(it)
+                        }
+                    }.join()
                 }
 
-
-                //TODO 리스너 달기
-                searchViewModel.updateProvideListener()
+                for (i in restAreaViewModel.routeRoomsList.indices) {
+//                    Log.i("TAG", restAreaViewModel.routeFoodsList.get(i).data.toString())
+                    Log.i("TAG", restAreaViewModel.routeRoomsList.get(i).data?.list.toString())
+                }
             }
 
 
                 if (coords.size>2) {
+
+                    //TODO 이미지 지정
                     path.coords = coords
                     path.color = Color.RED
                     path.map = naverMap
