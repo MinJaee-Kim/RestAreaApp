@@ -129,7 +129,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 for (i in restAreaViewModel.routeRoomsList.indices) {
-//                    Log.i("TAG", restAreaViewModel.routeFoodsList.get(i).data.toString())
+                    Log.i("TAG", restAreaViewModel.routeFoodsList.get(i).data.toString())
                     Log.i("TAG", restAreaViewModel.routeRoomsList.get(i).data?.list.toString())
                 }
             }

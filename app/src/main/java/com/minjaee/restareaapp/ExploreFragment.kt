@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minjaee.restareaapp.databinding.FragmentExploreBinding
 import com.minjaee.restareaapp.presentation.adapter.RoomsAdapter
@@ -42,7 +43,7 @@ class ExploreFragment : Fragment() {
         }
         roomsAdapter.setOnItemClickListener {
             //TODO 아코디언 만들기
-            Log.i("TAG", "확인")
+            Toast.makeText(context, "${it.data?.list?.get(0)?.serviceAreaName}", Toast.LENGTH_LONG).show()
         }
         bindingViews()
     }
