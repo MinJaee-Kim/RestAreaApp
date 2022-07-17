@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.minjaee.restareaapp.databinding.FragmentHomeBinding
@@ -27,6 +28,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var directionViewModel: DirectionViewModel
     private lateinit var searchViewModel: SearchViewModel
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
+    private lateinit var navController: NavController
     companion object {
         lateinit var restAreaViewModel: RestAreaViewModel
     }
@@ -60,14 +62,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
 
-        val navController = findNavController()
+        navController = findNavController()
+        //TODO 가져오기
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Location")
             ?.observe(viewLifecycleOwner) { result ->
                 directionViewModel.getDirections(
                     result.substring(0, result.indexOf("+")),
                     result.substring(result.indexOf("+")+1)
                 )
+                Log.i("TAG", "onViewCreated: ")
             }
+        navController.currentBackStackEntry?.savedStateHandle?.remove<String>("Location")
+
     }
 
     override fun onMapReady(naverMap: NaverMap) {
@@ -95,6 +101,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             resources.data?.let {
                 runBlocking {
                     //TODO 로딩바 달기
+                    //TODO 값 가져오기 방지
                     launch {
                         for (i in resources.data.route.traoptimal.get(0).path.indices) {
                             coords.add(
@@ -113,8 +120,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             }
                         }
                     }.join()
-
-                    //TODO restArea 정보 가져오기
                 }
                 searchViewModel.updateProvideListener()
 
@@ -126,11 +131,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             restAreaViewModel.getFoods(it)
                         }
                     }.join()
-                }
-
-                for (i in restAreaViewModel.routeRoomsList.indices) {
-                    Log.i("TAG", restAreaViewModel.routeFoodsList.get(i).data.toString())
-                    Log.i("TAG", restAreaViewModel.routeRoomsList.get(i).data?.list.toString())
                 }
             }
 

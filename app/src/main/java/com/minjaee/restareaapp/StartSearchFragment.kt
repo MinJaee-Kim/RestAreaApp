@@ -1,9 +1,11 @@
 package com.minjaee.restareaapp
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -23,6 +25,7 @@ class StartSearchFragment : Fragment() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var binding: FragmentStartBinding
     private lateinit var searchAdapter: SearchAdapter
+    private lateinit var imm: InputMethodManager
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,6 +53,7 @@ class StartSearchFragment : Fragment() {
         searchAdapter.setOnItemClickListener {
             viewModel.updateStart(it.placeName)
             viewModel.updateStartLocation(it.x+","+it.y)
+            viewModel.noLocationSearch.value = null
             view?.findNavController()?.popBackStack()
         }
         bindingSearchList()
@@ -63,14 +67,20 @@ class StartSearchFragment : Fragment() {
         }
 
         viewModel.noLocationSearch.observe(viewLifecycleOwner) { response ->
-            response.data.let {
-                if (response.data!=null) {
-                    searchAdapter.setList(response.data)
-                    searchAdapter.notifyDataSetChanged()
-                } else {
-                    Toast.makeText(activity, "데이터 에러", Toast.LENGTH_LONG).show()
+            if (response!=null) {
+                response.data.let {
+                    if (response.data != null) {
+                        searchAdapter.setList(response.data)
+                        searchAdapter.notifyDataSetChanged()
+                    }
                 }
+            } else {
+                searchAdapter.setList(null)
             }
         }
+
+        binding.startSearchEt.requestFocus()
+        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(binding.startSearchEt, 0)
     }
 }

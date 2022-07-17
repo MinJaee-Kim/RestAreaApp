@@ -8,9 +8,9 @@ import com.minjaee.restareaapp.data.model.keywordsearch.SearchMap
 import com.minjaee.restareaapp.databinding.SearchListItemBinding
 
 class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-    private lateinit var searchList: SearchMap
+    private var searchList: SearchMap? = null
 
-    fun setList(search: SearchMap){
+    fun setList(search: SearchMap?){
         searchList = search
     }
 
@@ -21,12 +21,12 @@ class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.bind(searchList.documents[position])
+        holder.bind(searchList?.documents?.get(position))
     }
 
     override fun getItemCount(): Int {
-        if (::searchList.isInitialized) {
-            return searchList.documents.size
+        if (searchList != null) {
+            return searchList!!.documents.size
         } else {
             return 0
         }
@@ -35,13 +35,15 @@ class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     inner class SearchViewHolder(
         val binding: SearchListItemBinding
     ): RecyclerView.ViewHolder(binding.root) {
-        fun bind(documents: Documents) {
-            binding.tvName.text = documents.placeName
-            binding.tvAddress.text = documents.addressName
+        fun bind(documents: Documents?) {
+            if (documents != null) {
+                binding.tvName.text = documents.placeName
+                binding.tvAddress.text = documents.addressName
 
-            binding.root.setOnClickListener {
-                onItemClickListener?.let {
-                    it(documents)
+                binding.root.setOnClickListener {
+                    onItemClickListener?.let {
+                        it(documents)
+                    }
                 }
             }
         }
