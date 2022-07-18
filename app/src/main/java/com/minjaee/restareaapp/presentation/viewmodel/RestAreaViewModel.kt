@@ -18,11 +18,10 @@ class RestAreaViewModel(
     private val getRestAreaRoomUseCase: GetRestAreaRoomUseCase,
     private val getRestAreaFoodUseCase: GetRestAreaFoodUseCase
 ) : AndroidViewModel(app) {
-    val rooms : MutableLiveData<Resource<RestAreaRoom>> = MutableLiveData()
-    val foods: MutableLiveData<Resource<RestAreaFood>> = MutableLiveData()
-
     val routeRoomsList: ArrayList<Resource<RestAreaRoom>> = ArrayList()
     val routeFoodsList: ArrayList<Resource<RestAreaFood>> = ArrayList()
+
+    var isListEmpty = true
 
     suspend fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
         try {

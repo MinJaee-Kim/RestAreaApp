@@ -26,11 +26,16 @@ import kotlinx.coroutines.*
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var directionViewModel: DirectionViewModel
-    private lateinit var searchViewModel: SearchViewModel
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var navController: NavController
+    private val markerList = ArrayList<Marker>()
+    private val path = PathOverlay()
+    private val coords = mutableListOf<LatLng>()
+    var marker = Marker()
+
     companion object {
         lateinit var restAreaViewModel: RestAreaViewModel
+        lateinit var searchViewModel: SearchViewModel
     }
 
     override fun onCreateView(
@@ -66,11 +71,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         //TODO 가져오기
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Location")
             ?.observe(viewLifecycleOwner) { result ->
-                directionViewModel.getDirections(
-                    result.substring(0, result.indexOf("+")),
-                    result.substring(result.indexOf("+")+1)
-                )
-                Log.i("TAG", "onViewCreated: ")
+                runBlocking {
+                    launch {
+                        directionViewModel.getDirections(
+                            result.substring(0, result.indexOf("+")),
+                            result.substring(result.indexOf("+")+1)
+                        )
+                    }.join()
+                }
             }
         navController.currentBackStackEntry?.savedStateHandle?.remove<String>("Location")
 
@@ -81,62 +89,71 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun viewModelObserver(naverMap: NaverMap) {
-        val path = PathOverlay()
-        val coords = mutableListOf<LatLng>()
+        //TODO 마커지우기
         directionViewModel.markers.observe(viewLifecycleOwner) { directions ->
-            val markerList = ArrayList<Marker>()
-            var index = 0
-            for (i in directions.indices) {
-                markerList.add(Marker())
+            markerList.forEach {
+                it.map = null
             }
-
+            markerList.clear()
             directions.forEach {
-                markerList.get(index).position = LatLng(it.latitude, it.longitude)
-                markerList.get(index).map = naverMap
-                index++
+                marker.position = LatLng(it.latitude, it.longitude)
+                marker.map = naverMap
+                markerList.add(marker)
             }
         }
 
         directionViewModel.directions.observe(viewLifecycleOwner) { resources ->
             resources.data?.let {
+                if (searchViewModel.isListEmpty){
+                    coords.clear()
+                    searchViewModel.searchList.clear()
+                    path.map = null
+                }
                 runBlocking {
-                    //TODO 로딩바 달기
-                    //TODO 값 가져오기 방지
+                    //TODO 로딩바 달기,
                     launch {
-                        for (i in resources.data.route.traoptimal.get(0).path.indices) {
-                            coords.add(
-                                LatLng(
-                                    resources.data.route.traoptimal[0].path[i].get(1),
-                                    resources.data.route.traoptimal[0].path[i].get(0)
+                        if (searchViewModel.isListEmpty) {
+                            for (i in resources.data.route.traoptimal.get(0).path.indices) {
+                                coords.add(
+                                    LatLng(
+                                        resources.data.route.traoptimal[0].path[i].get(1),
+                                        resources.data.route.traoptimal[0].path[i].get(0)
+                                    )
                                 )
-                            )
-                            if (i%40==0) {
-                                searchViewModel.getSearch(
-                                    resources.data.route.traoptimal[0].path[i].get(1),
-                                    resources.data.route.traoptimal[0].path[i].get(0),
-                                    3000,
-                                    "휴게소",
-                                )
+                                if (i % 40 == 0) {
+                                    searchViewModel.getSearch(
+                                        resources.data.route.traoptimal[0].path[i].get(1),
+                                        resources.data.route.traoptimal[0].path[i].get(0),
+                                        3000,
+                                        "휴게소",
+                                    )
+                                }
                             }
                         }
                     }.join()
                 }
+
+                searchViewModel.isListEmpty = false
                 searchViewModel.updateProvideListener()
 
 
                 runBlocking {
+                    //TODO locationHashset과 foodHashset 따로 존재
                     launch {
-                        searchViewModel.locationHashSet.value?.forEach {
-                            restAreaViewModel.getRooms(it)
-                            restAreaViewModel.getFoods(it)
+                        if (restAreaViewModel.isListEmpty) {
+                            searchViewModel.locationHashSet.value?.forEach {
+                                restAreaViewModel.getRooms(it)
+                                restAreaViewModel.getFoods(it)
+                            }
                         }
                     }.join()
                 }
+
+                restAreaViewModel.isListEmpty = false
             }
 
 
                 if (coords.size>2) {
-
                     //TODO 이미지 지정
                     path.coords = coords
                     path.color = Color.RED

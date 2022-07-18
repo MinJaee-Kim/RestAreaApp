@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.minjaee.restareaapp.HomeFragment
+import com.minjaee.restareaapp.R
 import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
 import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.util.Resource
@@ -62,17 +63,21 @@ class RoomsAdapter(val context: Context):RecyclerView.Adapter<RoomsAdapter.Rooms
                 }
                 if (binding.foodsRv.visibility == View.GONE) {
                     binding.foodsRv.visibility = View.VISIBLE
+                    binding.areaBtn.setImageResource(R.drawable.arrow_up)
                 } else {
                     binding.foodsRv.visibility = View.GONE
+                    binding.areaBtn.setImageResource(R.drawable.arrow_down)
                 }
             }
 
             binding.areaBtn.setOnClickListener {
-                //TODO 애니메이션, 버튼 바꾸기
+                //TODO 애니메이션
                 if (binding.foodsRv.visibility == View.GONE) {
                     binding.foodsRv.visibility = View.VISIBLE
+                    binding.areaBtn.setImageResource(R.drawable.arrow_up)
                 } else {
                     binding.foodsRv.visibility = View.GONE
+                    binding.areaBtn.setImageResource(R.drawable.arrow_down)
                 }
             }
         }

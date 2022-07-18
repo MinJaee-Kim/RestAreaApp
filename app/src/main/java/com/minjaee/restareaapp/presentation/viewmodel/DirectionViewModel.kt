@@ -19,14 +19,14 @@ class DirectionViewModel(
     val directions : MutableLiveData<Resource<GetDirections>> = MutableLiveData()
     val markers: MutableLiveData<HashSet<LatLng>> = MutableLiveData()
 
-    fun getDirections(start: String, goal: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getDirections(start: String, goal: String) = viewModelScope.launch(Dispatchers.IO) {
         try {
             val apiResult = getDirectionUseCase.execute(start, goal)
             directions.postValue(apiResult!!)
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }
-    }
+    }.join()
 
     fun updateMarkers(hashSet: HashSet<LatLng>){
         markers.postValue(hashSet)

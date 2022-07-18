@@ -39,10 +39,6 @@ class ExploreFragment : Fragment() {
             adapter = roomsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
-        roomsAdapter.setOnItemClickListener {
-            //TODO 아코디언 만들기
-            Toast.makeText(context, "${it.data?.list?.get(0)?.serviceAreaName}", Toast.LENGTH_LONG).show()
-        }
         bindingViews()
     }
 

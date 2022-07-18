@@ -1,7 +1,6 @@
 package com.minjaee.restareaapp.presentation.di.core
 
 import com.minjaee.restareaapp.data.repository.direction.DirectionRepositoryImpl
-import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionCacheDataSource
 import com.minjaee.restareaapp.data.repository.direction.datasource.DirectionRemoteDataSource
 import com.minjaee.restareaapp.data.repository.restarea.RestAreaRepositoryImpl
 import com.minjaee.restareaapp.data.repository.restarea.datasource.RestAreaFoodRemoteDataSource
@@ -38,11 +37,9 @@ class RepositoryModule {
     @Singleton
     @Provides
     fun provideDirectionRepository(
-        directionCacheDataSource: DirectionCacheDataSource,
         directionRemoteDataSource: DirectionRemoteDataSource
     ):DirectionRepository{
         return  DirectionRepositoryImpl(
-            directionCacheDataSource,
             directionRemoteDataSource
         )
     }

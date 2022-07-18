@@ -21,6 +21,8 @@ class SearchViewModel(
     val noLocationSearch: MutableLiveData<Resource<SearchMap>> = MutableLiveData()
     var locationHashSet: MutableLiveData<HashSet<String>> = MutableLiveData()
 
+    var isListEmpty = true
+
     var start = MutableLiveData<String>()
     var goal = MutableLiveData<String>()
 

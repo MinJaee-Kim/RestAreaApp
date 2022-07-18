@@ -15,6 +15,8 @@ import com.minjaee.restareaapp.presentation.adapter.SearchAdapter
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -24,10 +26,10 @@ class SearchFragment : Fragment() {
     companion object{
         lateinit var viewModel: SearchViewModel
     }
+
+    private lateinit var homeViewModel: SearchViewModel
     private lateinit var searchBinding: FragmentSearchBinding
     private lateinit var adapter: SearchAdapter
-    private lateinit var start: String
-    private lateinit var goal: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +48,8 @@ class SearchFragment : Fragment() {
         searchBinding = FragmentSearchBinding.bind(view)
         viewModel = ViewModelProvider(this, factory)
             .get(SearchViewModel::class.java)
+        homeViewModel = (HomeFragment).searchViewModel
+
 
         initBinding()
         initRecyclerView()
@@ -79,6 +83,11 @@ class SearchFragment : Fragment() {
         })
 
         searchBinding.button2.setOnClickListener {
+            runBlocking {
+                launch {
+                    homeViewModel.isListEmpty = true
+                }.join()
+            }
             val navController = findNavController()
 
             navController.previousBackStackEntry?.savedStateHandle?.set("Location", viewModel.startLocation
