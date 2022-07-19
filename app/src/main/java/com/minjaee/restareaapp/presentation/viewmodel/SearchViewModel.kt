@@ -35,7 +35,6 @@ class SearchViewModel(
     suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val apiResult = getSearchAreaUseCase.execute(y, x, radius, query)
-            Log.i("TAG", apiResult.data.toString())
             searchList.add(apiResult)
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())

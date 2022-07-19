@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.minjaee.restareaapp.databinding.FragmentHomeBinding
+import com.minjaee.restareaapp.presentation.others.LottieDialogFragment
 import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
@@ -33,6 +33,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val path = PathOverlay()
     private val coords = mutableListOf<LatLng>()
     lateinit var marker:Marker
+    private val lottieDialogFragment by lazy { LottieDialogFragment() }
 
     companion object {
         lateinit var restAreaViewModel: RestAreaViewModel
@@ -145,6 +146,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 CoroutineScope(Dispatchers.Main).launch {
+                    lottieDialogFragment.show(childFragmentManager, "loader")
                     job.join()
                     job2.join()
                     searchViewModel.isListEmpty = false
@@ -156,6 +158,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         path.color = Color.RED
                         path.map = naverMap
                     }
+                    lottieDialogFragment.dismiss()
                 }
             }
             }
