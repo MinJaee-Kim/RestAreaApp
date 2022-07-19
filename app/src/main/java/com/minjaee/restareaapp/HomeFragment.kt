@@ -2,7 +2,6 @@ package com.minjaee.restareaapp
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,7 +30,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private val markerList = ArrayList<Marker>()
     private val path = PathOverlay()
     private val coords = mutableListOf<LatLng>()
-    var marker = Marker()
+    lateinit var marker:Marker
 
     companion object {
         lateinit var restAreaViewModel: RestAreaViewModel
@@ -81,7 +80,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         navController.currentBackStackEntry?.savedStateHandle?.remove<String>("Location")
-
     }
 
     override fun onMapReady(naverMap: NaverMap) {
@@ -95,8 +93,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 it.map = null
             }
             markerList.clear()
+
             directions.forEach {
-                marker.position = LatLng(it.latitude, it.longitude)
+                marker = Marker(LatLng(it.latitude, it.longitude))
                 marker.map = naverMap
                 markerList.add(marker)
             }
@@ -106,7 +105,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             resources.data?.let {
                 if (searchViewModel.isListEmpty){
                     coords.clear()
+                    restAreaViewModel.routeRoomsList.clear()
+                    restAreaViewModel.routeFoodsList.clear()
                     searchViewModel.searchList.clear()
+                    MainActivity.nameHashSet.clear()
+                    MainActivity.directionHashSet.clear()
                     path.map = null
                 }
                 runBlocking {
@@ -120,11 +123,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                                         resources.data.route.traoptimal[0].path[i].get(0)
                                     )
                                 )
-                                if (i % 40 == 0) {
+                                if (i % 30 == 0) {
                                     searchViewModel.getSearch(
                                         resources.data.route.traoptimal[0].path[i].get(1),
                                         resources.data.route.traoptimal[0].path[i].get(0),
-                                        3000,
+                                        2500,
                                         "휴게소",
                                     )
                                 }

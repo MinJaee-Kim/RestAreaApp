@@ -2,7 +2,6 @@ package com.minjaee.restareaapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -27,8 +26,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val nameHashSet = HashSet<String>()
-    private val directionHashSet = HashSet<LatLng>()
+    companion object {
+        val nameHashSet = HashSet<String>()
+        val directionHashSet = HashSet<LatLng>()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

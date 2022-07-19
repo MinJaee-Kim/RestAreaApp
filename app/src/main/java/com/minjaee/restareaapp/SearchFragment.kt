@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.minjaee.restareaapp.databinding.FragmentSearchBinding
 import com.minjaee.restareaapp.presentation.adapter.SearchAdapter
+import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,9 @@ class SearchFragment : Fragment() {
         lateinit var viewModel: SearchViewModel
     }
 
-    private lateinit var homeViewModel: SearchViewModel
+    private lateinit var homeSearchViewModel: SearchViewModel
+    private lateinit var homeRestAreaViewModel: RestAreaViewModel
+
     private lateinit var searchBinding: FragmentSearchBinding
     private lateinit var adapter: SearchAdapter
 
@@ -48,7 +51,8 @@ class SearchFragment : Fragment() {
         searchBinding = FragmentSearchBinding.bind(view)
         viewModel = ViewModelProvider(this, factory)
             .get(SearchViewModel::class.java)
-        homeViewModel = (HomeFragment).searchViewModel
+        homeSearchViewModel = (HomeFragment).searchViewModel
+        homeRestAreaViewModel = (HomeFragment).restAreaViewModel
 
 
         initBinding()
@@ -85,7 +89,8 @@ class SearchFragment : Fragment() {
         searchBinding.button2.setOnClickListener {
             runBlocking {
                 launch {
-                    homeViewModel.isListEmpty = true
+                    homeSearchViewModel.isListEmpty = true
+                    homeRestAreaViewModel.isListEmpty = true
                 }.join()
             }
             val navController = findNavController()
