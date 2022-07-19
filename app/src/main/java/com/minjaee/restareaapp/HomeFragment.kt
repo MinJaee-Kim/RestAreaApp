@@ -2,10 +2,12 @@ package com.minjaee.restareaapp
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -70,13 +72,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         //TODO 가져오기
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Location")
             ?.observe(viewLifecycleOwner) { result ->
-                runBlocking {
-                    launch {
+                CoroutineScope(Dispatchers.IO).launch {
+                    Log.i("TAG", "viewModelObserver: ")
                         directionViewModel.getDirections(
                             result.substring(0, result.indexOf("+")),
                             result.substring(result.indexOf("+")+1)
                         )
-                    }.join()
                 }
             }
         navController.currentBackStackEntry?.savedStateHandle?.remove<String>("Location")
@@ -112,56 +113,51 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     MainActivity.directionHashSet.clear()
                     path.map = null
                 }
-                runBlocking {
+                val job = CoroutineScope(Dispatchers.IO).launch {
                     //TODO 로딩바 달기,
-                    launch {
-                        if (searchViewModel.isListEmpty) {
-                            for (i in resources.data.route.traoptimal.get(0).path.indices) {
-                                coords.add(
-                                    LatLng(
-                                        resources.data.route.traoptimal[0].path[i].get(1),
-                                        resources.data.route.traoptimal[0].path[i].get(0)
-                                    )
+                    if (searchViewModel.isListEmpty) {
+                        for (i in resources.data.route.traoptimal.get(0).path.indices) {
+                            coords.add(
+                                LatLng(
+                                    resources.data.route.traoptimal[0].path[i].get(1),
+                                    resources.data.route.traoptimal[0].path[i].get(0)
                                 )
-                                if (i % 30 == 0) {
-                                    searchViewModel.getSearch(
-                                        resources.data.route.traoptimal[0].path[i].get(1),
-                                        resources.data.route.traoptimal[0].path[i].get(0),
-                                        2500,
-                                        "휴게소",
-                                    )
-                                }
+                            )
+                            if (i % 30 == 0) {
+                                searchViewModel.getSearch(
+                                    resources.data.route.traoptimal[0].path[i].get(1),
+                                    resources.data.route.traoptimal[0].path[i].get(0),
+                                    2500,
+                                    "휴게소",
+                                )
                             }
                         }
-                    }.join()
+                    }
                 }
 
-                searchViewModel.isListEmpty = false
-                searchViewModel.updateProvideListener()
-
-
-                runBlocking {
-                    //TODO locationHashset과 foodHashset 따로 존재
-                    launch {
-                        if (restAreaViewModel.isListEmpty) {
-                            searchViewModel.locationHashSet.value?.forEach {
-                                restAreaViewModel.getRooms(it)
-                                restAreaViewModel.getFoods(it)
-                            }
+                val job2 = CoroutineScope(Dispatchers.IO).launch {
+                    if (restAreaViewModel.isListEmpty) {
+                        searchViewModel.locationHashSet.value?.forEach {
+                            restAreaViewModel.getRooms(it)
+                            restAreaViewModel.getFoods(it)
                         }
-                    }.join()
+                    }
                 }
 
-                restAreaViewModel.isListEmpty = false
+                CoroutineScope(Dispatchers.Main).launch {
+                    job.join()
+                    job2.join()
+                    searchViewModel.isListEmpty = false
+                    restAreaViewModel.isListEmpty = false
+                    searchViewModel.updateProvideListener()
+                    if (coords.size>2) {
+                        //TODO 이미지 지정
+                        path.coords = coords
+                        path.color = Color.RED
+                        path.map = naverMap
+                    }
+                }
             }
-
-
-                if (coords.size>2) {
-                    //TODO 이미지 지정
-                    path.coords = coords
-                    path.color = Color.RED
-                    path.map = naverMap
-                }
             }
         }
 }
