@@ -32,7 +32,7 @@ class SearchViewModel(
     lateinit var goalLocation: String
 
 
-    suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val apiResult = getSearchAreaUseCase.execute(y, x, radius, query)
             searchList.add(apiResult)
@@ -41,7 +41,7 @@ class SearchViewModel(
         }
     }.join()
 
-    fun getNoLocationSearch(query: String) = viewModelScope.launch(Dispatchers.IO) {
+    fun getNoLocationSearch(query: String) = CoroutineScope(Dispatchers.IO).launch {
         try {
             val apiResult = getNoLocationSearchAreaUseCase.execute(query)
             noLocationSearch.postValue(apiResult!!)
