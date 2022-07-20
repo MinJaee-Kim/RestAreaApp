@@ -9,6 +9,7 @@ import com.minjaee.restareaapp.data.model.restarearoom.RestAreaRoom
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaFoodUseCase
 import com.minjaee.restareaapp.domain.usecase.restarea.GetRestAreaRoomUseCase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -23,7 +24,7 @@ class RestAreaViewModel(
 
     var isListEmpty = true
 
-    suspend fun getFoods(stdRestNm: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getFoods(stdRestNm: String) = CoroutineScope(Dispatchers.Main).launch {
         try {
             val apiResult = getRestAreaFoodUseCase.execute(stdRestNm)
             if (apiResult != null) {
@@ -34,7 +35,7 @@ class RestAreaViewModel(
         }
     }.join()
 
-    suspend fun getRooms(serviceAreaName: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getRooms(serviceAreaName: String) = CoroutineScope(Dispatchers.Main).launch {
         try {
             val apiResult = getRestAreaRoomUseCase.execute(serviceAreaName)
             if (apiResult.data?.list?.get(0)?.serviceAreaName!=null) {

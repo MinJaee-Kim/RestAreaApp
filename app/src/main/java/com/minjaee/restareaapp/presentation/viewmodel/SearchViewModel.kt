@@ -32,7 +32,7 @@ class SearchViewModel(
     lateinit var goalLocation: String
 
 
-    suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = CoroutineScope(Dispatchers.IO).launch {
+    suspend fun getSearch(y: Double, x: Double, radius: Int, query: String) = CoroutineScope(Dispatchers.Main).launch {
         try {
             val apiResult = getSearchAreaUseCase.execute(y, x, radius, query)
             searchList.add(apiResult)

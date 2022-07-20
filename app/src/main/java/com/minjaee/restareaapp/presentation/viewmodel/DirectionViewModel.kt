@@ -9,20 +9,22 @@ import com.minjaee.restareaapp.data.model.getdirection.GetDirections
 import com.minjaee.restareaapp.data.util.Resource
 import com.minjaee.restareaapp.domain.usecase.direction.GetDirectionUseCase
 import com.naver.maps.geometry.LatLng
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class DirectionViewModel(
     private val app: Application,
     private val getDirectionUseCase: GetDirectionUseCase
 ) : AndroidViewModel(app) {
-    val directions : MutableLiveData<Resource<GetDirections>> = MutableLiveData()
+    val directions : MutableLiveData<Resource<GetDirections>?> = MutableLiveData()
     val markers: MutableLiveData<HashSet<LatLng>> = MutableLiveData()
 
-    suspend fun getDirections(start: String, goal: String) = viewModelScope.launch(Dispatchers.IO) {
+    suspend fun getDirections(start: String, goal: String) = CoroutineScope(Dispatchers.Main).launch {
         try {
             val apiResult = getDirectionUseCase.execute(start, goal)
-            directions.postValue(apiResult!!)
+            directions.value = apiResult
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
         }

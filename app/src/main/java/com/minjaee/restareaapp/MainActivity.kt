@@ -2,6 +2,7 @@ package com.minjaee.restareaapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -89,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-
+            Log.i("TAG", searchViewModel.searchList.size.toString())
             searchViewModel.updateLocationHashSet(nameHashSet)
             directionViewModel.updateMarkers(directionHashSet)
         })

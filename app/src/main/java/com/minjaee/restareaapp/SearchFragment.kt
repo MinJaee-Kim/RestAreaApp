@@ -88,12 +88,10 @@ class SearchFragment : Fragment() {
 
         searchBinding.button2.setOnClickListener {
             //TODO 출발지 및 도착지 둘다 초기화
-            runBlocking {
-                launch {
-                    homeSearchViewModel.isListEmpty = true
-                    homeRestAreaViewModel.isListEmpty = true
-                }.join()
-            }
+
+            homeSearchViewModel.isListEmpty = true
+            homeRestAreaViewModel.isListEmpty = true
+
             val navController = findNavController()
 
             navController.previousBackStackEntry?.savedStateHandle?.set("Location", viewModel.startLocation

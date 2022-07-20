@@ -5,5 +5,5 @@ import com.minjaee.restareaapp.data.util.Resource
 import retrofit2.Response
 
 interface DirectionRepository {
-    suspend fun getDirection(start:String, goal:String): Resource<GetDirections>
+    suspend fun getDirection(start:String, goal:String): Resource<GetDirections>?
 }
