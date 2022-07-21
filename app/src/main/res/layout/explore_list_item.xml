@@ -9,7 +9,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -27,6 +31,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:text="@string/restAreaName"
                     android:textColor="#000000"
                     android:textSize="22sp"
@@ -58,13 +64,14 @@
             android:layout_weight="1"
             android:background="#00000000"
             android:contentDescription="@string/restAreaBtn"
-            app:srcCompat="@drawable/arrow_down" />
+            app:srcCompat="@drawable/arrow_down"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/foodsRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#B66464"
+        android:background="#F7FEFF"
         android:visibility="gone" />
 </LinearLayout>

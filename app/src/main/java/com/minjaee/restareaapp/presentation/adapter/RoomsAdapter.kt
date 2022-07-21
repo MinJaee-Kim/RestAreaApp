@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.minjaee.restareaapp.HomeFragment
@@ -57,6 +58,7 @@ class RoomsAdapter(val context: Context):RecyclerView.Adapter<RoomsAdapter.Rooms
 
             binding.foodsRv.adapter = FoodsAdapter(foodsList, position)
             binding.foodsRv.layoutManager = LinearLayoutManager(context)
+            binding.foodsRv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 
 
             //TODO 하나씩 밀림,,

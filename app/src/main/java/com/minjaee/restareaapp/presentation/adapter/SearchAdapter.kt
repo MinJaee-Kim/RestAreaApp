@@ -49,10 +49,10 @@ class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
                             v.setBackgroundColor(Color.GRAY)
                         }
                         MotionEvent.ACTION_MOVE -> {
-                            v.setBackgroundColor(Color.WHITE)
+                            v.setBackgroundColor(Color.parseColor("#FAFAFA"))
                         }
                         MotionEvent.ACTION_UP -> {
-                            v.setBackgroundColor(Color.WHITE)
+                            v.setBackgroundColor(Color.parseColor("#FAFAFA"))
                             onItemClickListener?.let {
                                 it(documents)
                             }

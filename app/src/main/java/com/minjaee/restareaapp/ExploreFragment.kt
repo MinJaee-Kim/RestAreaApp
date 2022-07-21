@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minjaee.restareaapp.databinding.FragmentExploreBinding
 import com.minjaee.restareaapp.presentation.adapter.RoomsAdapter
@@ -35,14 +37,17 @@ class ExploreFragment : Fragment() {
     private fun initRecyclerView() {
         roomsAdapter = RoomsAdapter(context!!)
         roomsAdapter.setList(restAreaViewModel.routeRoomsList, restAreaViewModel.routeFoodsList)
-        binding.areaRv.apply {
-            adapter = roomsAdapter
-            layoutManager = LinearLayoutManager(activity)
-        }
         bindingViews()
     }
 
     private fun bindingViews() {
-
+        binding.areaRv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        binding.areaRv.apply {
+            adapter = roomsAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+        binding.exploreBackBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 }

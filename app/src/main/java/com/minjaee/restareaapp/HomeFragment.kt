@@ -21,6 +21,7 @@ import com.minjaee.restareaapp.presentation.viewmodel.DirectionViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.RestAreaViewModel
 import com.minjaee.restareaapp.presentation.viewmodel.SearchViewModel
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
 import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
@@ -67,19 +68,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         searchViewModel = (activity as MainActivity).searchViewModel
         restAreaViewModel = (activity as MainActivity).restAreaViewModel
 
-        initBinding()
-
-        fragmentHomeBinding.button.setOnClickListener {
+        fragmentHomeBinding.homeExploreBtn.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_exploreFragment)
         }
 
-        fragmentHomeBinding.button3.setOnClickListener {
+        fragmentHomeBinding.homeSearchBtn.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
         }
     }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
+        initBinding()
     }
 
     private fun initBinding() {
@@ -92,6 +92,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         result.substring(result.indexOf("+")+1)
                     )
                 }
+                naverMap.moveCamera(CameraUpdate.scrollTo(
+                    LatLng(
+                        result.substring(result.indexOf(",")+1, result.indexOf("+")).toDouble()
+                    , result.substring(0, result.indexOf(",")).toDouble()
+                )
+                ))
             }
         navController.currentBackStackEntry?.savedStateHandle?.remove<String>("Location")
 
@@ -116,6 +122,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
             MainActivity.nameHashSet.clear()
             MainActivity.directionHashSet.clear()
             directionViewModel.directions.value = null
+            viewModelStore.clear()
             path.map = null
         }
 
@@ -156,16 +163,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             searchViewModel.locationHashSet.value?.forEach {
                                 restAreaViewModel.getRooms(it)
                                 restAreaViewModel.getFoods(it)
-                                Log.i("TAGd", it)
                             }
                         }
-
-//                        restAreaViewModel.routeRoomsList.forEach {
-//                            Log.i("TAG", it.data.toString())
-//                        }
-//                        restAreaViewModel.routeFoodsList.forEach {
-//                            Log.i("TAG", it.data.toString())
-//                        }
                     }.join()
 
                     searchViewModel.isListEmpty = false
@@ -177,9 +176,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                         path.map = naverMap
                     }
                     if (restAreaViewModel.routeRoomsList.isNotEmpty()) {
-                        fragmentHomeBinding.button.visibility = View.VISIBLE
+                        fragmentHomeBinding.homeExploreBtn.visibility = View.VISIBLE
                     } else {
-                        fragmentHomeBinding.button.visibility = View.INVISIBLE
+                        fragmentHomeBinding.homeExploreBtn.visibility = View.INVISIBLE
                         Toast.makeText(context, "경로상 휴게소가 없습니다.", Toast.LENGTH_LONG).show()
                     }
                     lottieDialogFragment.dismiss()

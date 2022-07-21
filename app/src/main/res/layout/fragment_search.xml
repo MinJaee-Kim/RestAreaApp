@@ -6,6 +6,33 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/searchTb"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageView
+            android:id="@+id/searchBackBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/searchBackBtn"
+            app:srcCompat="@drawable/arrow_back" />
+
+        <TextView
+            android:id="@+id/searchTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/searchText"
+            android:textSize="27sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -14,27 +41,39 @@
         >
 
 
-    <EditText
-        android:id="@+id/searchStartEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/start"
-        android:inputType="textPersonName" />
+        <EditText
+            android:id="@+id/searchStartEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search_edittext_background"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/start"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            tools:ignore="TextContrastCheck" />
 
-    <EditText
-        android:id="@+id/searchGoalEt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:clickable="true"
-        android:focusable="false"
-        android:hint="@string/goal"
-        android:inputType="textPersonName"
-        android:minHeight="48dp" />
+        <EditText
+            android:id="@+id/searchGoalEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search_edittext_background"
+            android:clickable="true"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/goal"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            tools:ignore="TextContrastCheck" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
@@ -42,6 +81,7 @@
         android:layout_height="wrap_content" >
 
     </androidx.recyclerview.widget.RecyclerView>
+
     </LinearLayout>
 
     <LinearLayout
@@ -51,10 +91,14 @@
         >
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/getDirectionBtn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_height="60dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:text="@string/searchBtn"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </LinearLayout>

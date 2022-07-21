@@ -7,13 +7,39 @@
     android:orientation="vertical"
     tools:context=".StartSearchFragment">
 
-    <EditText
-        android:id="@+id/startSearchEt"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/startSearchTb"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/start"
-        android:inputType="textPersonName" />
+        android:layout_height="80dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageView
+            android:id="@+id/startSearchBackBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="35dp"
+            android:contentDescription="@string/searchBackBtn"
+            app:srcCompat="@drawable/arrow_back" />
+
+        <EditText
+            android:id="@+id/startSearchEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/search_start_edittext_background"
+            android:ems="10"
+            android:hint="@string/start"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:textColorHint="#546E7A"
+            tools:ignore="TextContrastCheck" />
+    </androidx.appcompat.widget.Toolbar>
 
 
     <androidx.recyclerview.widget.RecyclerView

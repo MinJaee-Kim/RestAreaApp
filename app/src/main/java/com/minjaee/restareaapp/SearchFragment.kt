@@ -87,7 +87,11 @@ class SearchFragment : Fragment() {
             }
         })
 
-        searchBinding.button2.setOnClickListener {
+        searchBinding.searchBackBtn.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        searchBinding.getDirectionBtn.setOnClickListener {
             //TODO 출발지 및 도착지 둘다 초기화
             if (searchBinding.searchStartEt.text.isEmpty()||searchBinding.searchGoalEt.text.isEmpty()) {
                 Toast.makeText(context, "출발지와 목적지를 입력해주세요.", Toast.LENGTH_LONG).show()

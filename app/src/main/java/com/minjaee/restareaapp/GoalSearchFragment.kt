@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.minjaee.restareaapp.databinding.FragmentGoalBinding
 import com.minjaee.restareaapp.presentation.adapter.SearchAdapter
@@ -50,6 +52,7 @@ class GoalSearchFragment : Fragment() {
             adapter = searchAdapter
             layoutManager = LinearLayoutManager(activity)
         }
+        binding.goalRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         searchAdapter.setOnItemClickListener {
             viewModel.updateGoal(it.placeName)
             viewModel.updateGoalLocation(it.x+","+it.y)
@@ -64,6 +67,10 @@ class GoalSearchFragment : Fragment() {
             if (text!="") {
                 viewModel.getNoLocationSearch(text.toString())
             }
+        }
+
+        binding.goalSearchBackBtn.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         viewModel.noLocationSearch.observe(viewLifecycleOwner) { response ->
