@@ -83,9 +83,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initBinding() {
-        //TODO provide 두번호출,,
         navController = findNavController()
-        //TODO 가져오기
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>("Location")
             ?.observe(viewLifecycleOwner) { result ->
                 CoroutineScope(Dispatchers.Main).launch {
@@ -158,8 +156,16 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                             searchViewModel.locationHashSet.value?.forEach {
                                 restAreaViewModel.getRooms(it)
                                 restAreaViewModel.getFoods(it)
+                                Log.i("TAGd", it)
                             }
                         }
+
+//                        restAreaViewModel.routeRoomsList.forEach {
+//                            Log.i("TAG", it.data.toString())
+//                        }
+//                        restAreaViewModel.routeFoodsList.forEach {
+//                            Log.i("TAG", it.data.toString())
+//                        }
                     }.join()
 
                     searchViewModel.isListEmpty = false

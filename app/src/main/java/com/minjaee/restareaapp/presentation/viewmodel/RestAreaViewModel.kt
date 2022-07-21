@@ -27,11 +27,14 @@ class RestAreaViewModel(
     suspend fun getFoods(stdRestNm: String) = CoroutineScope(Dispatchers.Main).launch {
         try {
             val apiResult = getRestAreaFoodUseCase.execute(stdRestNm)
-            if (apiResult != null) {
-                routeFoodsList.add(apiResult)
+            if (apiResult?.data != null) {
+                routeFoodsList.add(apiResult!!)
             }
         } catch (e: Exception) {
             Log.i("TAG", e.message.toString())
+        }
+        if (routeFoodsList.size>routeRoomsList.size){
+            routeFoodsList.removeAt(routeFoodsList.size-1)
         }
     }.join()
 

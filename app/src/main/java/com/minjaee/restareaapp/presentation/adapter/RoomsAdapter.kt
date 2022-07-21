@@ -1,8 +1,10 @@
 package com.minjaee.restareaapp.presentation.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,6 +58,63 @@ class RoomsAdapter(val context: Context):RecyclerView.Adapter<RoomsAdapter.Rooms
             binding.foodsRv.adapter = FoodsAdapter(foodsList, position)
             binding.foodsRv.layoutManager = LinearLayoutManager(context)
 
+
+            //TODO 하나씩 밀림,,
+//            binding.root.setOnTouchListener {v: View, event: MotionEvent ->
+//                when(event.action) {
+//                    MotionEvent.ACTION_DOWN -> {
+//                        v.setBackgroundColor(Color.GRAY)
+//                        binding.areaBtn.setBackgroundColor(Color.GRAY)
+//                    }
+//                    MotionEvent.ACTION_MOVE -> {
+//                        v.setBackgroundColor(Color.WHITE)
+//                        binding.areaBtn.setBackgroundColor(Color.WHITE)
+//                    }
+//                    MotionEvent.ACTION_UP -> {
+//                        v.setBackgroundColor(Color.WHITE)
+//                        binding.areaBtn.setBackgroundColor(Color.WHITE)
+//                        onItemClickListener?.let {
+//                            it(restAreaRoom[position])
+//                        }
+//                        if (binding.foodsRv.visibility == View.GONE) {
+//                            binding.foodsRv.visibility = View.VISIBLE
+//                            binding.areaBtn.setImageResource(R.drawable.arrow_up)
+//                        } else {
+//                            binding.foodsRv.visibility = View.GONE
+//                            binding.areaBtn.setImageResource(R.drawable.arrow_down)
+//                        }
+//                    }
+//                }
+//                true
+//            }
+//
+//            binding.areaBtn.setOnTouchListener {v: View, event: MotionEvent ->
+//                when(event.action) {
+//                    MotionEvent.ACTION_DOWN -> {
+//                        v.setBackgroundColor(Color.GRAY)
+//                        binding.root.setBackgroundColor(Color.GRAY)
+//                    }
+//                    MotionEvent.ACTION_MOVE -> {
+//                        v.setBackgroundColor(Color.WHITE)
+//                        binding.root.setBackgroundColor(Color.WHITE)
+//                    }
+//                    MotionEvent.ACTION_UP -> {
+//                        v.setBackgroundColor(Color.WHITE)
+//                        binding.root.setBackgroundColor(Color.WHITE)
+//                        onItemClickListener?.let {
+//                            it(restAreaRoom[position])
+//                        }
+//                        if (binding.foodsRv.visibility == View.GONE) {
+//                            binding.foodsRv.visibility = View.VISIBLE
+//                            binding.areaBtn.setImageResource(R.drawable.arrow_up)
+//                        } else {
+//                            binding.foodsRv.visibility = View.GONE
+//                            binding.areaBtn.setImageResource(R.drawable.arrow_down)
+//                        }
+//                    }
+//                }
+//                true
+//            }
 
             binding.root.setOnClickListener {
                 onItemClickListener?.let {

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -88,15 +89,20 @@ class SearchFragment : Fragment() {
 
         searchBinding.button2.setOnClickListener {
             //TODO 출발지 및 도착지 둘다 초기화
+            if (searchBinding.searchStartEt.text.isEmpty()||searchBinding.searchGoalEt.text.isEmpty()) {
+                Toast.makeText(context, "출발지와 목적지를 입력해주세요.", Toast.LENGTH_LONG).show()
+            } else {
+                homeSearchViewModel.isListEmpty = true
+                homeRestAreaViewModel.isListEmpty = true
 
-            homeSearchViewModel.isListEmpty = true
-            homeRestAreaViewModel.isListEmpty = true
+                val navController = findNavController()
 
-            val navController = findNavController()
-
-            navController.previousBackStackEntry?.savedStateHandle?.set("Location", viewModel.startLocation
-                    +"+"+viewModel.goalLocation)
-            navController.popBackStack()
+                navController.previousBackStackEntry?.savedStateHandle?.set(
+                    "Location", viewModel.startLocation
+                            + "+" + viewModel.goalLocation
+                )
+                navController.popBackStack()
+            }
         }
     }
 

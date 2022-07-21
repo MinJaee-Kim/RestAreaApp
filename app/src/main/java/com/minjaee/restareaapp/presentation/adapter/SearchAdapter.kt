@@ -1,6 +1,9 @@
 package com.minjaee.restareaapp.presentation.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.minjaee.restareaapp.data.model.keywordsearch.Documents
@@ -40,11 +43,24 @@ class SearchAdapter:RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
                 binding.tvName.text = documents.placeName
                 binding.tvAddress.text = documents.addressName
 
-                binding.root.setOnClickListener {
-                    onItemClickListener?.let {
-                        it(documents)
+                binding.root.setOnTouchListener {v: View, event: MotionEvent ->
+                    when(event.action) {
+                        MotionEvent.ACTION_DOWN -> {
+                            v.setBackgroundColor(Color.GRAY)
+                        }
+                        MotionEvent.ACTION_MOVE -> {
+                            v.setBackgroundColor(Color.WHITE)
+                        }
+                        MotionEvent.ACTION_UP -> {
+                            v.setBackgroundColor(Color.WHITE)
+                            onItemClickListener?.let {
+                                it(documents)
+                            }
+                        }
                     }
+                    true
                 }
+
             }
         }
     }

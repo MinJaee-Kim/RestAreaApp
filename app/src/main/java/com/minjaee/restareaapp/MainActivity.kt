@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
             for (i in searchViewModel.searchList.indices){
                 for (j in searchViewModel.searchList.get(i).data?.documents?.indices!!) {
                     if (searchViewModel.searchList.get(i).data!!.documents.get(j).categoryName.endsWith("고속도로휴게소")){
-                        if (searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.equals("방향")) {
+                        if (searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.endsWith("방향")) {
                             nameHashSet.add(
                                 searchViewModel.searchList.get(i).data!!.documents.get(j).placeName.substring(
                                     0,
@@ -90,7 +90,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
-            Log.i("TAG", searchViewModel.searchList.size.toString())
             searchViewModel.updateLocationHashSet(nameHashSet)
             directionViewModel.updateMarkers(directionHashSet)
         })
