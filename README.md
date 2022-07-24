@@ -1,20 +1,20 @@
 # RestAreaApp
 휴게소_앱
 =============
-한국도로공사_노선별, 방향별 휴게소 편의시설 현황
-https://www.data.go.kr/data/15076640/openapi.do
-한국도로공사_휴게소 푸드메뉴현황 조회 서비스
-https://www.data.go.kr/data/15076643/openapi.do
-카카오 키워드 검색
-https://developers.kakao.com/docs/latest/ko/local/dev-guide
-네이버 direction5
-https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving
-등의 OPEN API를 사용한 앱입니다.
+한국도로공사_노선별, 방향별 휴게소 편의시설 현황<br>
+https://www.data.go.kr/data/15076640/openapi.do<br>
+한국도로공사_휴게소 푸드메뉴현황 조회 서비스<br>
+https://www.data.go.kr/data/15076643/openapi.do<br>
+카카오 키워드 검색<br>
+https://developers.kakao.com/docs/latest/ko/local/dev-guide<br>
+네이버 direction5<br>
+https://api.ncloud-docs.com/docs/ai-naver-mapsdirections-driving<br>
+등의 OPEN API를 사용한 앱입니다.<br>
 
 
 메인화면
 -------------
-사진
+https://user-images.githubusercontent.com/75728238/180640334-c505b0bb-2ca1-4e32-b66e-4b843d38166b.PNG
 <br>
 <br>
 클라이언트 - 안드로이드와 서버 - 오라클 클라우드를 사용하였으며 <br>
