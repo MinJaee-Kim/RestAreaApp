@@ -109,6 +109,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
             directions.forEach {
                 marker = Marker(LatLng(it.latitude, it.longitude))
+                marker.width = 80
+                marker.height = 100
                 marker.map = naverMap
                 markerList.add(marker)
             }
@@ -161,6 +163,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     launch {
                         if (restAreaViewModel.isListEmpty) {
                             searchViewModel.locationHashSet.value?.forEach {
+                                Log.i("TAGd", it)
                                 restAreaViewModel.getRooms(it)
                                 restAreaViewModel.getFoods(it)
                             }

@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.get
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,7 +59,7 @@ class RoomsAdapter(val context: Context):RecyclerView.Adapter<RoomsAdapter.Rooms
             substring(0, restAreaRoom.get(position).data?.list?.get(0)?.convenience!!.length-1).
             replace("|", ", ")
 
-            binding.foodsRv.adapter = FoodsAdapter(foodsList, position)
+            binding.foodsRv.adapter = FoodsAdapter(foodsList, position, context)
             binding.foodsRv.layoutManager = LinearLayoutManager(context)
             binding.foodsRv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
 

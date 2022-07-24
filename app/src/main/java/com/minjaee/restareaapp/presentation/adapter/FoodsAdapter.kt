@@ -1,7 +1,10 @@
 package com.minjaee.restareaapp.presentation.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.RecyclerView
 import com.minjaee.restareaapp.data.model.restareafood.RestAreaFood
 import com.minjaee.restareaapp.data.util.Resource
@@ -9,7 +12,8 @@ import com.minjaee.restareaapp.databinding.FoodsListItemBinding
 
 class FoodsAdapter(
     private val foodsList:ArrayList<Resource<RestAreaFood>>,
-    private val position:Int
+    private val position:Int,
+    private val context: Context
     ): RecyclerView.Adapter<FoodsAdapter.FoodsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodsViewHolder {
@@ -24,6 +28,9 @@ class FoodsAdapter(
     }
 
     override fun getItemCount(): Int {
+        if (foodsList[position].data!!.list.isEmpty()){
+            Toast.makeText(context, "메뉴 정보가 없습니다.", Toast.LENGTH_LONG).show()
+        }
         return foodsList[position].data!!.list.size
     }
 
